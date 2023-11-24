@@ -13,7 +13,7 @@ internal sealed class OccasionConfiguration : IEntityTypeConfiguration<Occasion>
         builder.HasOne<Machine>()
             .WithMany(x => x.Occasions);
 
-        builder.HasOne<Treatment>()
+        builder.HasOne(x => x.Treatment)
             .WithMany(x => x.Occasions);
     }
 }

@@ -9,7 +9,5 @@ internal sealed class MachineConfiguration : IEntityTypeConfiguration<Machine>
     public void Configure(EntityTypeBuilder<Machine> builder)
     {
         builder.HasKey(x => x.Id);
-
-        builder.HasOne<MachineType>().WithMany(x => x.Machines);
     }
 }

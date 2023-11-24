@@ -9,8 +9,7 @@ public class Cancer
 
     public CancerType CancerType { get; set; }
 
-    public ulong TreatmentId { get; set; }
-    public Treatment Treatment { get; set; }
+    public ICollection<Treatment> Treatments { get; set; } = [];
 
     public List<MachineType> MachineTypes { get; set; } = [];
 }

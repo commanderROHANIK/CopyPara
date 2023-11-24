@@ -11,7 +11,11 @@ internal sealed class MachineTypeConfiguration : IEntityTypeConfiguration<Machin
     {
         builder.HasKey(x => x.Id);
 
-        builder.HasMany<Machine>().WithOne(x => x.MachineType);
-        builder.HasMany<Cancer>().WithMany(x => x.MachineTypes);
+        builder
+            .HasMany(x => x.Machines)
+            .WithOne(x => x.MachineType)
+            .HasForeignKey(x => x.MachineTypeId);
+
+        builder.HasMany(x => x.Cancers).WithMany(x => x.MachineTypes);
     }
 }

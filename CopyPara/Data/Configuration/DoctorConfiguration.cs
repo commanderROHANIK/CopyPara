@@ -10,10 +10,7 @@ public sealed class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
 {
     public void Configure(EntityTypeBuilder<Doctor> builder)
     {
-        builder.HasOne<ApplicationUser>()
-            .WithOne(x => x.Doctor);
-
-        builder.HasMany<Treatment>()
+        builder.HasMany(x => x.Treatments)
             .WithOne(x => x.Doctor);
     }
 }

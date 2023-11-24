@@ -9,7 +9,7 @@ public class CancerConfiguration  : IEntityTypeConfiguration<Cancer>
 {
     public void Configure(EntityTypeBuilder<Cancer> builder)
     {
-        builder.HasOne<Treatment>()
+        builder.HasMany(x => x.Treatments)
             .WithOne(x => x.Cancer);
     }
 }
