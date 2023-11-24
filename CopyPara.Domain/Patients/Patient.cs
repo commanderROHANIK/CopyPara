@@ -8,7 +8,7 @@ namespace CopyPara.Domain.Patients;
 
 public class Patient
 {
-    public int Id { get; set; }
+    public ulong Id { get; set; }
 
     public string Name { get; set; } = string.Empty;
 
