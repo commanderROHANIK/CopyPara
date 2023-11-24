@@ -1,4 +1,4 @@
-using CopyPara.Domain.Cancer;
+using CopyPara.Domain.Cancers;
 using CopyPara.Domain.Treatments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
