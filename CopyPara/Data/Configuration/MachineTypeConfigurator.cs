@@ -1,4 +1,4 @@
-﻿using CopyPara.Domain.Machine;
+﻿using CopyPara.Domain.Machines;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
