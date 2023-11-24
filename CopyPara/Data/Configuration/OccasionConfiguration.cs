@@ -10,10 +10,10 @@ internal sealed class OccasionConfiguration : IEntityTypeConfiguration<Occasion>
 {
     public void Configure(EntityTypeBuilder<Occasion> builder)
     {
-        builder.HasOne<Machine>()
+        builder.HasOne(x => x.Treatment)
             .WithMany(x => x.Occasions);
 
-        builder.HasOne(x => x.Treatment)
+        builder.HasOne(x => x.Machine)
             .WithMany(x => x.Occasions);
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using CopyPara.Domain.Machines;
 using CopyPara.Domain.Treatments;
 
 namespace CopyPara.Domain.Occasions
