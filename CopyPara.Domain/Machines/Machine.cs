@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CopyPara.Domain.Occasions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace CopyPara.Domain.Machines
         public string Name { get; set; }
         public ulong MachineTypeId { get; set; }
         public MachineType MachineType { get; set; }
+        public List<Occasion> Occasions { get; set; } = [];
 
     }
 }
