@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /CopyPara/app.db-shm
 /CopyPara/app.db-wal
+/CopyPara/app.db
