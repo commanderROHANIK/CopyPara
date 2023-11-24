@@ -1,10 +1,10 @@
 ﻿using CopyPara.Domain.Treatments;
 
-namespace CopyPara.Domain;
+namespace CopyPara.Domain.Doctors;
 
 public class Doctor
 {
-    public ulong Id { get; set; }
+    public ulong Id { get; set; }
 
     public string ApplicationUserId { get; set; }
 
