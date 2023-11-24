@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CopyPara.Data.Configuration;
 
-public class CancertConfiguration  : IEntityTypeConfiguration<Cancer>
+public class CancerConfiguration  : IEntityTypeConfiguration<Cancer>
 {
     public void Configure(EntityTypeBuilder<Cancer> builder)
     {
