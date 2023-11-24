@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 @using CopyPara.Data
+@using CopyPara.Domain.Doctors
 
 @inject UserManager<ApplicationUser> UserManager
 @inject IUserStore<ApplicationUser> UserStore
@@ -58,8 +59,12 @@
 
     public async Task RegisterUser(EditContext editContext)
     {
+        var doctor = CreateDoctor();
         var user = CreateUser();
 
+        doctor.ApplicationUserId = user.Id;
+        user.Doctor = doctor;
+        
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -103,6 +108,19 @@
         {
             throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
                 $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor.");
+        }
+    }
+    
+    private Doctor CreateDoctor()
+    {
+        try
+        {
+            return Activator.CreateInstance<Doctor>();
+        }
+        catch
+        {
+            throw new InvalidOperationException($"Can't create an instance of '{nameof(Doctor)}'. " +
+                                                $"Ensure that '{nameof(Doctor)}' is not an abstract class and has a parameterless constructor.");
         }
     }
 
