@@ -1,4 +1,6 @@
-﻿namespace CopyPara.Domain;
+﻿using CopyPara.Domain.Treatments;
+
+namespace CopyPara.Domain;
 
 public class Doctor
 {
