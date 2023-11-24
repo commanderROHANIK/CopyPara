@@ -1,4 +1,4 @@
-using CopyPara.Domain;
+using CopyPara.Domain.Doctors;
 using Microsoft.AspNetCore.Identity;
 
 namespace CopyPara.Data

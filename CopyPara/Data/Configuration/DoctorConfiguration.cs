@@ -1,5 +1,6 @@
 ﻿using CopyPara.Data;
-using CopyPara.Domain;
+using CopyPara.Domain.Doctors;
+using CopyPara.Domain.Treatments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
