@@ -7,9 +7,9 @@ namespace CopyPara.Endpoints;
 
 public static class Patient
 {
-    public static async Task<Results<Ok<string>, BadRequest>> Create(ISender sender)
+    public static async Task<Results<Ok<string>, BadRequest>> Create(ISender sender, CancellationToken cancellationToken)
     {
-        string message = await sender.Send(new CreatePatientRequest());
+        string message = await sender.Send(new CreatePatientRequest(), cancellationToken);
 
         return TypedResults.Ok(message);
     }
