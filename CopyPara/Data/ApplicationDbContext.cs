@@ -1,4 +1,4 @@
-using CopyPara.Domain.Cancer;
+using CopyPara.Domain.Cancers;
 using CopyPara.Domain.Doctors;
 using CopyPara.Domain.Machines;
 using CopyPara.Domain.Occasions;
