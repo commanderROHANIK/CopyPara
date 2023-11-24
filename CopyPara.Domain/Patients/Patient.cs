@@ -12,5 +12,5 @@ public class Patient
 
     public string Name { get; set; } = string.Empty;
 
-    public float Wheight { get; set; }
+    public float Weight { get; set; }
 }
