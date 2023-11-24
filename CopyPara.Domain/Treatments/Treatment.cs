@@ -1,6 +1,7 @@
 using CopyPara.Domain.Patients;
 using CopyPara.Domain.Doctors;
 using CopyPara.Domain.Occasions;
+using CopyPara.Domain.Cancers;
 
 namespace CopyPara.Domain.Treatments;
 
@@ -12,7 +13,7 @@ public class Treatment
     public Patient Patient { get; set; }
     public ulong DoctorId { get; set; }
     public Doctor Doctor { get; set; }
-    public Cancer.Cancer Cancer { get; set; }
+    public Cancer Cancer { get; set; }
     public ulong CancerId { get; set; }
     public List<Occasion> Occasions { get; set; } = [];
 }

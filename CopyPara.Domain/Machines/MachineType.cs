@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CopyPara.Domain.Cancers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,6 @@ namespace CopyPara.Domain.Machines
         public AcceleratorType Type { get; set; }
         public List<Features> Features { get; set; } = [];
         public List<Machine> Machines { get; set;} = [];
+        public List<Cancer> Cancers { get; set; } = [];
     }
 }

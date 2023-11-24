@@ -1,4 +1,4 @@
-namespace CopyPara.Domain.Cancer;
+namespace CopyPara.Domain.Cancers;
 
 public enum CancerType
 {

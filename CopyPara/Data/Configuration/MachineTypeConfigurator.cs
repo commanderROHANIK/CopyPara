@@ -1,4 +1,5 @@
-﻿using CopyPara.Domain.Machines;
+﻿using CopyPara.Domain.Cancers;
+using CopyPara.Domain.Machines;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,5 +12,6 @@ internal sealed class MachineTypeConfiguration : IEntityTypeConfiguration<Machin
         builder.HasKey(x => x.Id);
 
         builder.HasMany<Machine>().WithOne(x => x.MachineType);
+        builder.HasMany<Cancer>().WithMany(x => x.MachineTypes);
     }
 }
