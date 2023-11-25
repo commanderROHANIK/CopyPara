@@ -10,6 +10,6 @@ namespace CopyPara.Application.Occasion.Scheduler
 {
     public interface IOccasionScheduler
     {
-        // Task<TimeSlot> TimeSlot(DateTime start, DateTime end, int length, MachineType machineType, CancellationToken cancellationToken);
+        Task<TimeSlot> TimeSlot(DateTime start, DateTime end, int length, MachineType machineType, CancellationToken cancellationToken);
     }
 }
