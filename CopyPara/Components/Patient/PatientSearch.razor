@@ -1,4 +1,6 @@
-﻿@using CopyPara.Domain.Patients
+﻿@using CopyPara.Application
+@using CopyPara.Domain.Patients
+@using MediatR
 @inject ISender Sender
 @rendermode InteractiveServer
 @implements IDialogContentComponent<Patient>

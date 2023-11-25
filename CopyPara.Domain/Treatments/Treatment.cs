@@ -8,6 +8,7 @@ namespace CopyPara.Domain.Treatments;
 public class Treatment
 {
     public ulong Id { get; set; }
+    public DateTime StartDate { get; set; }
 
     public ulong PatientId { get; set; }
     public Patient Patient { get; set; }
