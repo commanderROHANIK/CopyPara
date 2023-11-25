@@ -1,0 +1,33 @@
+@page "/AddPatient"
+@using CopyPara.Domain.Patients
+@using MediatR
+@using CopyPara.Application.Patient.Create
+@inject ISender sender
+
+<h3>AddPatient</h3>
+<h1>Create New Patient</h1>
+
+<EditForm FormName="createPatientForm" Model="@Patient" OnValidSubmit="@CreatePatient">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <div>
+        <label for="name">Name:</label>
+        <InputText id="name" @bind-Value="Patient.Name"/>
+    </div>
+    <button type="submit">Create Patient</button>
+</EditForm>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public Patient Patient { get; set; }
+
+    protected override void OnInitialized() => Patient ??= new();
+
+    private async Task CreatePatient()
+    {
+        await sender.Send(new CreatePatientRequest() { Name = Patient.Name });
+    }
+
+}
