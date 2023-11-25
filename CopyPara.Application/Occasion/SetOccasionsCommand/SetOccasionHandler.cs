@@ -33,6 +33,7 @@ public sealed class SetOccasionHandler : IRequestHandler<SetOccasionCommand>
             Date = DateTime.Now,
             MachineId = 1,
             TreatmentId = 1,
+            TimeSlot = new(5, 9)
         };
 
         await _occasionRepository.AddAsync(occasion, cancellationToken);

@@ -48,16 +48,8 @@ public sealed class OccasionRepository : IOccasionRepository
         var time = _timeProvider.GetUtcNow();
 
         var removables = await _context.Occasions
-            // .AsNoTracking()
-            // .Include(x => x.Treatment)
             .Where(x => x.TreatmentId == treatmentId)
-            // .Where(x => x.Treatment.DoctorId == doctorId)
             .Where(x => (DateTime)(object)x.Date > time.Date)
             .ExecuteDeleteAsync(cancellationToken);
-
-        // foreach (var removable in removables)
-        // {
-        //     _context.Occasions.Remove(removable);
-        // }
     }
 }

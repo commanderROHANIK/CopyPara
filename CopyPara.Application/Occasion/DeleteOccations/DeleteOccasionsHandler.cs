@@ -6,11 +6,15 @@ public sealed class DeleteOccasionsHandler : IRequestHandler<DeleteOccasionComma
 {
     private readonly IOccasionRepository _occasionRepository;
     private readonly IAuthDoctor _authDoctor;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteOccasionsHandler(IOccasionRepository occasionRepository, IAuthDoctor authDoctor)
+    public DeleteOccasionsHandler(IOccasionRepository occasionRepository,
+                                  IAuthDoctor authDoctor,
+                                  IUnitOfWork unitOfWork)
     {
         _occasionRepository = occasionRepository;
         _authDoctor = authDoctor;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(DeleteOccasionCommand request, CancellationToken cancellationToken)
@@ -23,5 +27,6 @@ public sealed class DeleteOccasionsHandler : IRequestHandler<DeleteOccasionComma
         }
 
         await _occasionRepository.DeleteOccasion(doctor.Id, request.TreatmentId, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }
