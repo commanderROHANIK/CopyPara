@@ -23,7 +23,9 @@ internal sealed class CreatePatientHandler : IRequestHandler<CreatePatientReques
     {
         Domain.Patients.Patient patient = new()
         {
-            Name = request.Name
+            Name = request.Name,
+            Condition = request.Condition,
+            Gender = request.Gender,
         };
 
         try

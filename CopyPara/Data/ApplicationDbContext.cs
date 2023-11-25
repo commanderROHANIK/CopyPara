@@ -4,6 +4,7 @@ using CopyPara.Domain.Doctors;
 using CopyPara.Domain.Machines;
 using CopyPara.Domain.Occasions;
 using CopyPara.Domain.Patients;
+using CopyPara.Domain.Rooms;
 using CopyPara.Domain.Treatments;
 using CopyPara.Domain.Utilizations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -28,6 +29,8 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     public DbSet<Cancer> Cancers => Set<Cancer>();
 
     public DbSet<Utilization> Utilization => Set<Utilization>();
+
+    public DbSet<Room> Rooms => Set<Room>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
