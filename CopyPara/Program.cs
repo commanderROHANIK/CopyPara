@@ -59,7 +59,7 @@ builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
 builder.Services.AddScoped<IMachineRepository, MachineRepository>();
 builder.Services.AddScoped<IOccasionRepository, OccasionRepository>();
 builder.Services.AddScoped<IUtilizationRepository, UtilizationRepository>();
-builder.Services.AddScoped<IOccasionScheduler, OccassionScheduler>();
+// builder.Services.AddScoped<IOccasionScheduler, OccassionScheduler>();
 
 var app = builder.Build();
 

@@ -15,6 +15,6 @@ namespace CopyPara.Domain.Utilizations
         public ulong MachineId { get; set; }
         public Machine Machine { get; set; }
         public int CurrentUtilization { get; set; }
-        public Slot[] Slots { get; set; }
+        // public Slot[] Slots { get; set; }
     }
 }
