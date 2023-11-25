@@ -14,7 +14,10 @@ namespace CopyPara.Application.Treatment.Create
         public ulong CancerId {  get; init; }
         public float Weight { get; init; }
         public DateTime StartDate { get; init; }
+        public int Fraction { get; init; }
         public DateTime? UrgentTreatmentTime { get; init; }
         public bool CanHoldBreath { get; init; }
+
+
     }
 }

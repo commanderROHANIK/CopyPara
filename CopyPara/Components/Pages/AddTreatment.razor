@@ -3,6 +3,7 @@
 @using CopyPara.Components.Patient
 @using Application.Treatment.GetCancer
 @using Application.Treatment.Create
+@using MediatR
 @inject IDialogService DialogService
 @inject ISender Sender
 @rendermode InteractiveServer
@@ -139,6 +140,7 @@ else
             UrgentTreatmentTime = selectedTime,
             Weight = weight.Value,
             AvgTimeMins = selectedCancer.AvgTimesMin,
+            Fraction = Int32.Parse(selectedFraction)
         });
     }
 }

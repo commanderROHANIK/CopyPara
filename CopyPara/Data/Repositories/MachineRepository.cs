@@ -19,14 +19,14 @@ public sealed class MachineRepository : IMachineRepository
         return _context.Machines.FindAsync(machineId, cancellationToken);
     }
 
-    public IAsyncEnumerable<Machine> GetAllMachines(CancellationToken cancellationToken = default)
+    public Task<Machine[]> GetAllMachines(CancellationToken cancellationToken = default)
     {
-        return _context.Machines.AsAsyncEnumerable();
+        return _context.Machines.Include(x => x.MachineType).ToArrayAsync(cancellationToken);
     }
 
     public Task<Machine[]> GetMachinesAsync(MachineType type,CancellationToken cancellationToken = default)
     {
-        return _context.Machines.Where(x => x.MachineType == type).ToArrayAsync(cancellationToken); ;
+        return _context.Machines.Where(x => x.MachineType == type).ToArrayAsync(cancellationToken);
     }
 
 }
