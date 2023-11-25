@@ -1,16 +1,12 @@
 ﻿@* To get access to all Fluent UI System icons, install the Microsoft.FluentUI.AspNetCore.Compoents.Icon package *@
 @* See all the diffeent ways on how to use icons at https://www.fluentui-blazor.net/Icon *@
-
+@rendermode InteractiveServer
 @implements IDisposable
 
 @inject NavigationManager NavigationManager
 
 <nav>
-    <FluentNavMenu Width="250" Collapsible="true" Title="Custom navigation menu">
-        <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icon.FromImageUrl("/images/home.svg")" IconColor="Color.Accent">Home</FluentNavLink>
-        <FluentNavLink Href="counter" Icon="@Icon.FromImageUrl("/images/counter.svg")" IconColor="Color.Accent">Counter</FluentNavLink>
-        <FluentNavLink Href="weather" Icon="@Icon.FromImageUrl("/images/weather.svg")" IconColor="Color.Accent">Weather</FluentNavLink>
-        <FluentNavLink Href="auth" Icon="@Icon.FromImageUrl("/images/authrequired.svg")" IconColor="Color.Accent">Auth Required</FluentNavLink>
+    <FluentNavMenu Width="250" @bind-Expanded="@IsExpanded" Collapsible="true" Title="Custom navigation menu">
         <AuthorizeView>
             <Authorized>
                 <FluentNavLink Href="Account/Manage">@context.User.Identity?.Name</FluentNavLink>
@@ -19,6 +15,7 @@
                     <input type="hidden" name="ReturnUrl" value="@currentUrl" />
                     <FluentButton Type="ButtonType.Submit" Style="width: 100%;">Logout</FluentButton>
                 </form>
+                <FluentNavLink Href="/" Match="NavLinkMatch.All">Home</FluentNavLink>
                 <FluentNavLink Href="addPatient">Add Patient</FluentNavLink>
                 <FluentNavLink Href="reports">View reports</FluentNavLink>
             </Authorized>
@@ -32,8 +29,9 @@
 
 
 @code {
+    bool IsExpanded = true;
     private string? currentUrl;
-
+    
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
