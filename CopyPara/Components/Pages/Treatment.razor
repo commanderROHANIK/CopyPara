@@ -1,0 +1,31 @@
+﻿@page "/treatment"
+@* To get access to all Fluent UI System icons, install the Microsoft.FluentUI.AspNetCore.Compoents.Icon package *@
+@* See all the diffeent ways on how to use icons at https://www.fluentui-blazor.net/Icon *@
+
+
+<FluentStack>
+    <FluentCard Width="300px" Height="200px">
+        <p>Here you can create new treatments for existing patients</p>
+        <FluentNavLink Href="treatment/create">
+            <FluentButton IconStart="@(new Icons.Regular.Size16.AddCircle())"
+                      Appearance="Appearance.Accent">
+            Create
+            </FluentButton>
+        </FluentNavLink>
+
+    </FluentCard>
+    <FluentCard Width="300px" Height="200px" AreaRestricted="false">
+        <p>Here you can view the currently running treatments. You only get an overview on this interface, you cannot change your treatments. </p>
+        <FluentNavLink Href="treatment/list">
+            <FluentButton IconStart="@(new Icons.Regular.Size16.Apps())"
+                          Appearance="Appearance.Accent">
+                List
+            </FluentButton>
+        </FluentNavLink>
+
+    </FluentCard>
+</FluentStack>
+@code
+{
+
+}

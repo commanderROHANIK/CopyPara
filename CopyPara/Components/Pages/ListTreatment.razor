@@ -1,0 +1,134 @@
+﻿@page "/treatment/list"
+@using Microsoft.AspNetCore.Authorization
+@using CopyPara.Application.Treatment.Read
+@using CopyPara.Domain.Treatments
+
+
+@inject ISender sender
+@* To get access to all Fluent UI System icons, install the Microsoft.FluentUI.AspNetCore.Compoents.Icon package *@
+@* See all the diffeent ways on how to use icons at https://www.fluentui-blazor.net/Icon *@
+
+
+<FluentDataGrid Items="@FilteredItems" ResizableColumns=true Pagination="@pagination" TGridItem="Domain.Treatments.Treatment" OnRowFocus="HandleRowFocus"
+GridTemplateColumns="1fr 1fr 1fr 1fr 1fr" style="height: 400px; overflow:auto;">
+    <TemplateColumn Align="Align.Center">
+        
+    </TemplateColumn>
+    @*<PropertyColumn Property="@(c => c.Name)" InitialSortDirection=SortDirection.Descending Sortable="true" Comparer="@StringLengthComparer.Instance">
+    <ColumnOptions>
+    <div class="search-box">
+    <FluentSearch type="search" Autofocus=true @bind-Value=nameFilter @oninput="HandleDomain.Treatments.TreatmentFilter" AfterBindValue="HandleClear" Placeholder="Domain.Treatments.Treatment name..." />
+    </div>
+    </ColumnOptions>
+    </PropertyColumn>*@
+    <TemplateColumn Title="Name"  IsDefaultSortColumn=true>
+        <ColumnOptions>
+            <div class="search-box">
+                <FluentSearch type="search" Autofocus=true @bind-Value=nameFilter @oninput="TreatmentFilter" @bind-Value:after="HandleClear" Placeholder="Domain.Treatments.Treatment name..." />
+            </div>
+        </ColumnOptions>
+        <ChildContent>
+            @(context.Patient.Name)
+        </ChildContent>
+    </TemplateColumn>
+    <PropertyColumn Property="@(c => c.Fraction)" Sortable="true" Align="Align.Start" />
+    <PropertyColumn Property="@(c => c.Weight)" Sortable="true" Align="Align.Center" />
+    <PropertyColumn Property="@(c => c.Cancer.CancerType)" Sortable="true" Align="Align.End" />
+    <PropertyColumn Property="@(c => c.StartDate)" Sortable="true" Format="yyyy-MM-dd" Align="Align.End" />
+    <FluentPaginator State="@pagination" Class="paginator" />
+</FluentDataGrid>
+
+
+
+
+
+@code {
+    IQueryable<Domain.Treatments.Treatment> items;
+    PaginationState pagination = new PaginationState { ItemsPerPage = 20 };
+    string nameFilter = string.Empty;
+
+    GridSort<Domain.Treatments.Treatment> rankSort = GridSort<Domain.Treatments.Treatment>
+        .ByDescending(x => x.Patient.Name);
+
+    // Uncomment line below when using the TemplateColumn example for the Domain.Treatments.Treatment _name
+    GridSort<Domain.Treatments.Treatment> nameSort = GridSort<Domain.Treatments.Treatment>.ByAscending(x => x.Patient.Name, StringLengthComparer.Instance);
+
+
+    IQueryable<Domain.Treatments.Treatment> FilteredItems => items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = GetTreatments().AsQueryable();
+    }
+
+    private void TreatmentFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            nameFilter = value;
+        }
+    }
+
+    private void HandleClear()
+    {
+        if (string.IsNullOrWhiteSpace(nameFilter))
+        {
+            nameFilter = string.Empty;
+        }
+    }
+
+    public class StringLengthComparer : IComparer<string>
+    {
+        public static readonly StringLengthComparer Instance = new StringLengthComparer();
+
+        public int Compare(string? x, string? y)
+        {
+            if (x is null)
+            {
+                return y is null ? 0 : -1;
+            }
+
+            if (y is null)
+            {
+                return 1;
+            }
+
+            return x.Length.CompareTo(y.Length);
+        }
+    }
+
+    private void HandleRowFocus(FluentDataGridRow<Domain.Treatments.Treatment> row)
+    {
+        Console.WriteLine($"Row focused: {row.Item?.Patient.Name}");
+    }
+
+    private Domain.Treatments.Treatment[] GetTreatments()
+    {
+        var t = sender.Send(new ReadTreatmentRequest());
+        return t.Result;
+    }
+}
+<style>
+    /* Ensure all the flags are the same size, and centered */
+    .flag {
+        height: 1rem;
+        margin: auto;
+        border: 1px solid var(--neutral-layer-3);
+    }
+
+    :host {
+        display: flex;
+        flex-direction: column;
+    }
+
+    mat-accordion {
+        flex-grow: 1;
+    }
+
+    .paginator {
+
+        display: flex;
+        align-self: flex-end;
+    }
+
+</style>

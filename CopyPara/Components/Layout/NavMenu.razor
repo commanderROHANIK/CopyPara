@@ -10,13 +10,9 @@
         <AuthorizeView>
             <Authorized>
                 <FluentNavLink Href="Account/Manage">@context.User.Identity?.Name</FluentNavLink>
-                <form action="Account/Logout" method="post">
-                    <AntiforgeryToken />
-                    <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                    <FluentButton Type="ButtonType.Submit" Style="width: 100%;">Logout</FluentButton>
-                </form>
                 <FluentNavLink Href="/" Match="NavLinkMatch.All">Home</FluentNavLink>
                 <FluentNavLink Href="addPatient">Add Patient</FluentNavLink>
+                <FluentNavLink Href="treatment">Treatments</FluentNavLink>
                 <FluentNavLink Href="reports">View reports</FluentNavLink>
             </Authorized>
             <NotAuthorized>
