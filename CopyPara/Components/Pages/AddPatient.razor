@@ -1,10 +1,11 @@
 @page "/AddPatient"
+@rendermode InteractiveServer
+
 @using CopyPara.Domain.Patients
 @using MediatR
 @using CopyPara.Application.Patient.Create
 @inject ISender sender
 
-<h3>AddPatient</h3>
 <h1>Create New Patient</h1>
 
 <EditForm FormName="createPatientForm" Model="@Patient" OnValidSubmit="@CreatePatient">
@@ -12,15 +13,13 @@
     <ValidationSummary/>
 
     <div>
-        <label for="name">Name:</label>
-        <InputText id="name" @bind-Value="Patient.Name"/>
+        <FluentLabel for="name">Name:</FluentLabel>
+        <FluentTextField id="name" @bind-Value=Patient.Name></FluentTextField>
     </div>
-    <button type="submit">Create Patient</button>
+    <FluentButton Type="ButtonType.Submit" Appearance="@Appearance.Accent">Create Patient</FluentButton>
 </EditForm>
 
 @code {
-
-    [SupplyParameterFromForm]
     public Patient Patient { get; set; }
 
     protected override void OnInitialized() => Patient ??= new();
