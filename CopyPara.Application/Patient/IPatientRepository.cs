@@ -6,4 +6,5 @@ public interface IPatientRepository
 {
     Task AddAsync(Domain.Patients.Patient patient, CancellationToken cancellationToken = default);
     ValueTask<Domain.Patients.Patient?> GetPatientAsync(ulong patientId, CancellationToken cancellationToken = default);
+    IAsyncEnumerable<Domain.Patients.Patient> SearchByName(string name);
 }
