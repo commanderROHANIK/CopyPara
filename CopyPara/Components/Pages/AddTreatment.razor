@@ -44,6 +44,17 @@ else
 
 <FluentCalendar @bind-Value="@selectedDate" />
 
+@if (selectedTime.HasValue)
+{
+    <p>
+        @selectedTime.Value
+    </p>
+}
+
+<FluentButton OnClick="OpenUrgent">
+    Set urgent treatment
+</FluentButton>
+
 <FluentButton OnClick="Save">
     Save
 </FluentButton>
@@ -57,6 +68,7 @@ else
     private IEnumerable<Cancer> cancers = Enumerable.Empty<Cancer>();
 
     private DateTime? selectedDate = null;
+    private DateTime? selectedTime;
 
     private bool canHoldBreath = true;
 
@@ -93,9 +105,27 @@ else
         }
     }
 
+    private async Task OpenUrgent()
+    {
+        DialogParameters parameters = new()
+        {
+            Alignment = HorizontalAlignment.Center,
+            Title = "Urgent treatment",
+            Width = "300px",
+            Height = "200px"
+        };
+        var dialog = await DialogService.ShowDialogAsync<UrgentTreatmentDialog>(parameters);
+        var result = await dialog.Result;
+
+        if (result.Data is not null && result.Data is DateTime selectedTime)
+        {
+            this.selectedTime = selectedTime;
+        }
+    }
+
     private async Task Save()
     {
-        if (selectedDate is null || selectedCancer is null || selectedPatient is null || weight is null)
+        if (!selectedDate.HasValue || selectedCancer is null || selectedPatient is null || !weight.HasValue)
         {
             return;
         }
@@ -105,8 +135,10 @@ else
             CancerId = selectedCancer.Id,
             CanHoldBreath = canHoldBreath,
             PatientId = selectedPatient.Id,
-            StartDate = (DateTime)selectedDate,
-            Weight = (float)weight,
+            StartDate = selectedDate.Value,
+            UrgentTreatmentTime = selectedTime,
+            Weight = weight.Value,
+            AvgTimeMins = selectedCancer.AvgTimesMin,
         });
     }
 }

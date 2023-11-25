@@ -1,0 +1,49 @@
+﻿@implements IDialogContentComponent
+
+<FluentDialogBody>
+    <FluentTimePicker Label="Time of treatment" ValueChanged="TimeChanged" Value="selectedTime" />
+</FluentDialogBody>
+
+<FluentDialogFooter>
+    <FluentButton OnClick="Save">
+        Ok
+    </FluentButton>
+</FluentDialogFooter>
+@code {
+    private readonly TimeOnly lowerBoundary = new(15, 0);
+    private readonly TimeOnly upperBoundary = new(16, 0);
+
+    private DateTime selectedTime = new DateTime(1900, 1, 1, 15, 30, 0);
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    [Parameter]
+    public int AvgTimeMins { get; set; }
+
+    public void TimeChanged(DateTime? selectedTime)
+    {
+        if (!selectedTime.HasValue)
+        {
+            return;
+        }
+
+        var time = TimeOnly.FromDateTime(selectedTime.Value);
+        if (time < lowerBoundary)
+        {
+            return;
+        }
+
+        if (time > upperBoundary)
+        {
+            return;
+        }
+
+        this.selectedTime = selectedTime.Value;
+    }
+
+    private async Task Save()
+    {
+        await Dialog.CloseAsync(selectedTime);
+    }
+}
