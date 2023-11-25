@@ -1,9 +1,7 @@
-﻿using CopyPara.Application.Patient;
-using CopyPara.Application.Treatment;
+﻿using CopyPara.Application.Treatment;
 using CopyPara.Domain.Cancers;
-using CopyPara.Domain.Patients;
 using CopyPara.Domain.Treatments;
-using System.Runtime.InteropServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace CopyPara.Data.Repositories;
 
@@ -29,5 +27,12 @@ public sealed class TreatmentRepository : ITreatmentRepository
     public ValueTask<Treatment?> GetTreatmentAsync(ulong treatmentId, CancellationToken cancellationToken = default)
     {
         return _context.Treatments.FindAsync(treatmentId, cancellationToken);
+    }
+
+    Task<Application.Treatment.GetCancer.Cancer[]> ITreatmentRepository.GetCancersForSelectAsync(CancellationToken cancellationToken)
+    {
+         return _context.Cancers
+            .Select(x => new Application.Treatment.GetCancer.Cancer(x.Id, x.CancerType.ToFastString(), x.GetFractions()))
+            .ToArrayAsync(cancellationToken);
     }
 }

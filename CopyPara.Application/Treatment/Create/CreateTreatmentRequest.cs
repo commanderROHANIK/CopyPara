@@ -12,5 +12,8 @@ namespace CopyPara.Application.Treatment.Create
         public int AvgTimeMins { get; init; }
         public ulong PatientId { get; init; }
         public ulong CancerId {  get; init; }
+        public float Weight { get; init; }
+        public DateTime StartDate { get; init; }
+        public bool CanHoldBreath { get; init; }
     }
 }

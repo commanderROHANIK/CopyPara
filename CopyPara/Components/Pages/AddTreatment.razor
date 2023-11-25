@@ -1,0 +1,112 @@
+﻿@page "/treatment/create"
+@using Domain.Patients
+@using CopyPara.Components.Patient
+@using Application.Treatment.GetCancer
+@using Application.Treatment.Create
+@inject IDialogService DialogService
+@inject ISender Sender
+@rendermode InteractiveServer
+
+<h3>Add Treatment</h3>
+
+@if (selectedPatient is null)
+{
+    <p>Patient is not selected</p>
+}
+else
+{
+    <p>@selectedPatient.Name</p>
+}
+
+<FluentButton OnClick="OpenPatientSearchDialog">
+    Search patient
+</FluentButton>
+
+<FluentTextField Label="Weight" ValueChanged="WeightChange" />
+
+<FluentCheckbox Label="Can hold breath" @bind-Value="canHoldBreath"></FluentCheckbox>
+
+<FluentSelect TOption="Cancer"
+    Items="cancers"
+    Label="Cancer type"
+    OptionValue="@(c => c.Id.ToString())"
+    OptionText="@(c => c.Name)"
+    @bind-SelectedOption="@selectedCancer" />
+
+@if (selectedCancer is not null)
+{
+    <FluentSelect TOption="int"
+        Items="selectedCancer.Fractions"
+        Label="Select fraction"
+        OptionText="@(f => f.ToString())"
+        @bind-Value="@selectedFraction" />
+}
+
+<FluentCalendar @bind-Value="@selectedDate" />
+
+<FluentButton OnClick="Save">
+    Save
+</FluentButton>
+
+@code {
+    private Patient? selectedPatient = null!;
+    private float? weight;
+
+    private string selectedFraction = string.Empty;
+    private Cancer? selectedCancer;
+    private IEnumerable<Cancer> cancers = Enumerable.Empty<Cancer>();
+
+    private DateTime? selectedDate = null;
+
+    private bool canHoldBreath = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cancers = await Sender.Send(new GetCancersQuery());
+        selectedCancer = cancers.First();
+    }
+
+    private async Task OpenPatientSearchDialog()
+    {
+        DialogParameters parameters = new()
+        {
+            Alignment = HorizontalAlignment.Center,
+            Title = "Search patient",
+            Width = "500px",
+            Height = "400px"
+        };
+
+        var dialog = await DialogService.ShowDialogAsync<PatientSearch>(parameters);
+        var result = await dialog.Result;
+
+        if (result.Data is not null && result.Data is Patient patient)
+        {
+            selectedPatient = patient;
+        }
+    }
+
+    private void WeightChange(string value)
+    {
+        if (float.TryParse(value, out float weight))
+        {
+            this.weight = weight;
+        }
+    }
+
+    private async Task Save()
+    {
+        if (selectedDate is null || selectedCancer is null || selectedPatient is null || weight is null)
+        {
+            return;
+        }
+
+        await Sender.Send(new CreateTreatmentRequest
+        {
+            CancerId = selectedCancer.Id,
+            CanHoldBreath = canHoldBreath,
+            PatientId = selectedPatient.Id,
+            StartDate = (DateTime)selectedDate,
+            Weight = (float)weight,
+        });
+    }
+}

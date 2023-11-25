@@ -1,25 +1,31 @@
 ﻿@using CopyPara.Domain.Patients
 @inject ISender Sender
 @rendermode InteractiveServer
+@implements IDialogContentComponent<Patient>
 
-<FluentTextField Label="Patient name" ValueChanged="Search" Immediate=true />
+<FluentDialogBody>
+    <FluentTextField Label="Patient name" ValueChanged="Search" Immediate=true />
 
-<FluentDataGrid Items="patients.AsQueryable()">
-    <PropertyColumn Title="Name" Property="@(p => p.Name)" />
-    <TemplateColumn Title="Action" Align="@Align.End">
-        <FluentButton OnClick="@(() => SelectPatient(context))">
-            Select
-        </FluentButton>
-    </TemplateColumn>
-</FluentDataGrid>
+    <FluentDataGrid Items="patients.AsQueryable()">
+        <PropertyColumn Title="Name" Property="@(p => p.Name)" />
+        <TemplateColumn Title="Action" Align="@Align.End">
+            <FluentButton OnClick="@(() => SelectPatient(context))">
+                Select
+            </FluentButton>
+        </TemplateColumn>
+    </FluentDataGrid>
+</FluentDialogBody>
+
+<FluentDialogFooter Visible="false" />
 
 @code {
-    private string search = string.Empty;
-
     private List<Patient> patients = new();
 
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
     [Parameter]
-    public EventCallback<Patient> PatientSelected { get; set; }
+    public Patient Content { get; set; } = default!;
 
     private async Task Search(string value)
     {
@@ -40,8 +46,13 @@
         }
     }
 
+
     private async Task SelectPatient(Patient patient)
     {
-        await PatientSelected.InvokeAsync(patient);
+        if (patient is null) {
+            Console.WriteLine("Krumpli21");
+        }
+
+        await Dialog.CloseAsync(patient);
     }
 }
