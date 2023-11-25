@@ -1,9 +1,11 @@
 ﻿@page "/treatments"
+@using Microsoft.AspNetCore.Authorization
 @using Application.Treatment.GetTreatments
 @using Application.Occasion.DeleteOccations
 @using Application.Occasion.SetOccasionsCommand
 @inject ISender Sender
 @rendermode InteractiveServer
+@attribute [Authorize]
 
 <h3>View treatments</h3>
 
