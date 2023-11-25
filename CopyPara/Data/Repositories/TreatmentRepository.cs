@@ -16,7 +16,7 @@ public sealed class TreatmentRepository : ITreatmentRepository
         _context = context;
     }
 
-    public async Task CreateAsync(Treatment treatment, CancellationToken cancellationToken = default)
+    public async Task AddAsync(Treatment treatment, CancellationToken cancellationToken = default)
     {
         await _context.Treatments.AddAsync(treatment, cancellationToken);
     }

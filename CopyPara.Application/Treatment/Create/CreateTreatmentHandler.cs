@@ -28,7 +28,7 @@ namespace CopyPara.Application.Treatment.Create
 
             if (patient == null || cancer == null)
                 return "failure";
-
+            
             Domain.Treatments.Treatment treatment = new()
             {
                 Id = request.Id,
@@ -38,7 +38,7 @@ namespace CopyPara.Application.Treatment.Create
                 Cancer = cancer,
             };
 
-            await _treatmentRepository.CreateAsync(treatment, cancellationToken);
+            await _treatmentRepository.AddAsync(treatment, cancellationToken);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

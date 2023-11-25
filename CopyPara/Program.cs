@@ -1,5 +1,6 @@
 using CopyPara;
 using CopyPara.Application;
+using CopyPara.Application.Machine;
 using CopyPara.Application.Patient;
 using CopyPara.Application.Treatment;
 using CopyPara.Components;
@@ -50,6 +51,7 @@ builder.Services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<
 
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
+builder.Services.AddScoped<IMachineRepository, MachineRepository>();
 
 var app = builder.Build();
 

@@ -9,7 +9,7 @@ namespace CopyPara.Application.Treatment
 {
     public interface ITreatmentRepository
     {
-        Task CreateAsync(Domain.Treatments.Treatment treatment, CancellationToken cancellationToken = default);
+        Task AddAsync(Domain.Treatments.Treatment treatment, CancellationToken cancellationToken = default);
         ValueTask<Cancer?> GetCancerAsync(ulong cancerId, CancellationToken cancellationToken = default);
     }
 }
