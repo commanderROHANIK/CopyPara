@@ -1,0 +1,47 @@
+﻿@using CopyPara.Domain.Patients
+@inject ISender Sender
+@rendermode InteractiveServer
+
+<FluentTextField Label="Patient name" ValueChanged="Search" Immediate=true />
+
+<FluentDataGrid Items="patients.AsQueryable()">
+    <PropertyColumn Title="Name" Property="@(p => p.Name)" />
+    <TemplateColumn Title="Action" Align="@Align.End">
+        <FluentButton OnClick="@(() => SelectPatient(context))">
+            Select
+        </FluentButton>
+    </TemplateColumn>
+</FluentDataGrid>
+
+@code {
+    private string search = string.Empty;
+
+    private List<Patient> patients = new();
+
+    [Parameter]
+    public EventCallback<Patient> PatientSelected { get; set; }
+
+    private async Task Search(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            this.patients.Clear();
+
+            return;
+        }
+
+        var patients =  await Sender.Send(new PatientByNameRequest(value));
+
+        this.patients.Clear();
+
+        await foreach(var patient in patients)
+        {
+            this.patients.Add(patient);
+        }
+    }
+
+    private async Task SelectPatient(Patient patient)
+    {
+        await PatientSelected.InvokeAsync(patient);
+    }
+}

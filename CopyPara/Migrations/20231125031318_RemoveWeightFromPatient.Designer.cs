@@ -3,6 +3,7 @@ using System;
 using CopyPara.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CopyPara.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231125031318_RemoveWeightFromPatient")]
+    partial class RemoveWeightFromPatient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -149,9 +152,6 @@ namespace CopyPara.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<ulong>("UtilizationId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MachineTypeId");
@@ -240,29 +240,6 @@ namespace CopyPara.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("Treatments");
-                });
-
-            modelBuilder.Entity("CopyPara.Domain.Utilizations.Utilization", b =>
-                {
-                    b.Property<ulong>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CurrentUtilization")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("TEXT");
-
-                    b.Property<ulong>("MachineId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MachineId")
-                        .IsUnique();
-
-                    b.ToTable("Utilization");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -476,17 +453,6 @@ namespace CopyPara.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("CopyPara.Domain.Utilizations.Utilization", b =>
-                {
-                    b.HasOne("CopyPara.Domain.Machines.Machine", "Machine")
-                        .WithOne("Utilization")
-                        .HasForeignKey("CopyPara.Domain.Utilizations.Utilization", "MachineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Machine");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -551,9 +517,6 @@ namespace CopyPara.Migrations
             modelBuilder.Entity("CopyPara.Domain.Machines.Machine", b =>
                 {
                     b.Navigation("Occasions");
-
-                    b.Navigation("Utilization")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Machines.MachineType", b =>
