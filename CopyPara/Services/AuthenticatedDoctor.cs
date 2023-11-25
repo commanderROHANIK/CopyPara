@@ -1,10 +1,10 @@
 ﻿using System.Security.Claims;
-using CopyPara.Application;
 using CopyPara.Data;
+using CopyPara.Application;
 using CopyPara.Domain.Doctors;
 using Microsoft.EntityFrameworkCore;
 
-namespace CopyPara;
+namespace CopyPara.Services;
 
 public sealed class AuthenticatedDoctor : IAuthDoctor
 {
