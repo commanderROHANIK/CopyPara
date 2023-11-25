@@ -26,8 +26,6 @@ public sealed class AuthenticatedDoctor : IAuthDoctor
             return null;
         }
 
-        Console.WriteLine(id);
-
         var doc = await _context.Doctors.FirstOrDefaultAsync(x => x.ApplicationUserId == id, cancellationToken);
 
         return doc;
