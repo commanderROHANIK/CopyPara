@@ -1,0 +1,38 @@
+﻿@page "/diagnostics"
+
+@* To get access to all Fluent UI System icons, install the Microsoft.FluentUI.AspNetCore.Compoents.Icon package *@
+@* See all the diffeent ways on how to use icons at https://www.fluentui-blazor.net/Icon *@
+
+
+<script>
+    function dragstartHandler(ev) {
+        // Add the target element's id to the data transfer object
+        ev.dataTransfer.setData("application/my-app", ev.target.id);
+        ev.dataTransfer.effectAllowed = "move";
+    }
+    function dragoverHandler(ev) {
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = "move";
+    }
+    function dropHandler(ev) {
+        ev.preventDefault();
+        // Get the id of the target and add the moved element to the target's DOM
+        const data = ev.dataTransfer.getData("application/my-app");
+        ev.target.appendChild(document.getElementById(data));
+    }
+</script>
+
+<p id="p1" draggable="true" ondragstart="dragstartHandler(event)">
+    This element is draggable.
+</p>
+<div id="target" 
+     ondrop="dropHandler(event)"
+     ondragover="dragoverHandler(event)">
+    <FluentStack Style="border: 1px dotted var(--accent-fill-rest)">
+        <div class="demopanel">This is some content displayed in a div</div>
+        <div class="demopanel">This is some content displayed in a div</div>
+    </FluentStack>
+</div>
+@code
+{
+}
