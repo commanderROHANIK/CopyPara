@@ -25,6 +25,10 @@
         </div>
     </FluentGridItem>
 </FluentGrid>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+
+<!-- This is the glue between Blazor and Chart.js -->
+<script src="_content/ChartJs.Blazor.Fork/ChartJsBlazorInterop.js"></script>
 
 @code {
     JustifyContent Justification = JustifyContent.FlexStart;
@@ -32,9 +36,9 @@
     private static string[] _labels = { "TrueBeam1", "TrueBeam2", "VitalBeam1", "VitalBeam1", "Unique" };
     private BarConfig _barConfig;
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
-        GetOccasion();
+        await GetOccasion();
         _barConfig = getBorderConfig();
 
         foreach (string color in _labels)
@@ -77,21 +81,21 @@
     private string[] GetColors(int[] usageData)
     {
         List<string> colors = new List<string>();
-        string red = ColorUtil.ColorHexString(255,0,0);
+        string red = ColorUtil.ColorHexString(255, 0, 0);
         string yellow = ColorUtil.ColorHexString(250, 238, 5);
         string green = ColorUtil.ColorHexString(0, 250, 0);
 
         foreach (var usage in usageData)
         {
             var actualUsage = (double)usage / (double)usageData.Max();
-            //Todo: Have to use different method for the coloring
-            //but need to decide max value before
+    //Todo: Have to use different method for the coloring
+    //but need to decide max value before
             if (actualUsage > 0.9)
                 colors.Add(red);
             else if (actualUsage > 0.75)
                 colors.Add(yellow);
             else
-                colors.Add(green);         
+                colors.Add(green);
         }
 
         return colors.ToArray();
