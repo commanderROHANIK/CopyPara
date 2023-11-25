@@ -1,0 +1,47 @@
+﻿@page "/treatments"
+@using Microsoft.AspNetCore.Authorization
+@using Application.Treatment.GetTreatments
+@using Application.Occasion.DeleteOccations
+@using Application.Occasion.SetOccasionsCommand
+@inject ISender Sender
+@rendermode InteractiveServer
+@attribute [Authorize]
+
+<h3>View treatments</h3>
+
+<FluentDataGrid Items="treatments.AsQueryable()">
+    <PropertyColumn Title="Patient name" Property="@(t => t.PatientName)" />
+    <TemplateColumn Title="Actions" Align="Align.End">
+        @if (context.Occasions > 0)
+        {
+            <FluentButton OnClick="@(() => Delete(context))">
+                Delete
+            </FluentButton>
+        }
+        else
+        {
+            <FluentButton OnClick="@(() => Update(context))">
+                Set appointments
+            </FluentButton>
+        }
+    </TemplateColumn>
+</FluentDataGrid>
+
+@code {
+    private IEnumerable<DocTreatments> treatments = Enumerable.Empty<DocTreatments>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        treatments = await Sender.Send(new GetTreatmentsQuery());
+    }
+
+    private async Task Delete(DocTreatments treatment)
+    {
+        await Sender.Send(new DeleteOccasionCommand(treatment.Id));
+    }
+
+    private async Task Update(DocTreatments treatment)
+    {
+        await Sender.Send(new SetOccasionCommand(treatment.Id));
+    }
+}
