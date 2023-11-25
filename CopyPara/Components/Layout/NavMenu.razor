@@ -19,13 +19,14 @@
                     <input type="hidden" name="ReturnUrl" value="@currentUrl" />
                     <FluentButton Type="ButtonType.Submit" Style="width: 100%;">Logout</FluentButton>
                 </form>
+                <FluentNavLink Href="addPatient">Add Patient</FluentNavLink>
+                <FluentNavLink Href="reports">View reports</FluentNavLink>
             </Authorized>
             <NotAuthorized>
                 <FluentNavLink Href="Account/Register">Register</FluentNavLink>
                 <FluentNavLink Href="Account/Login">Login</FluentNavLink>
             </NotAuthorized>
         </AuthorizeView>
-        <FluentNavLink Href="addPatient">Add Patient</FluentNavLink>
     </FluentNavMenu>
 </nav>
 
