@@ -5,6 +5,7 @@ using CopyPara.Domain.Machines;
 using CopyPara.Domain.Occasions;
 using CopyPara.Domain.Patients;
 using CopyPara.Domain.Treatments;
+using CopyPara.Domain.Utilizations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,15 +27,12 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
 
     public DbSet<Cancer> Cancers => Set<Cancer>();
 
+    public DbSet<Utilization> Utilization => Set<Utilization>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-    }
-
-    public Task SaveChangesAsync(CancellationToken cancellationToken)
-    {
-        return SaveChangesAsync();
     }
 }

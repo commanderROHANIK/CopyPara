@@ -1,6 +1,9 @@
 using CopyPara;
 using CopyPara.Application;
+using CopyPara.Application.Machine;
 using CopyPara.Application.Patient;
+using CopyPara.Application.Treatment;
+using CopyPara.Application.Utilization;
 using CopyPara.Components;
 using CopyPara.Components.Account;
 using CopyPara.Data;
@@ -47,7 +50,10 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CopyP
 
 builder.Services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
-builder.Services.AddTransient<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
+builder.Services.AddScoped<IMachineRepository, MachineRepository>();
+builder.Services.AddScoped<IUtilizationRepository, UtilizationRepository>();
 
 var app = builder.Build();
 

@@ -16,4 +16,9 @@ public sealed class PatientRepository : IPatientRepository
     {
         await _context.Patients.AddAsync(patient, cancellationToken);
     }
+
+    public ValueTask<Patient?> GetPatientAsync(ulong patientId, CancellationToken cancellationToken = default)
+    {
+        return _context.Patients.FindAsync(patientId, cancellationToken);
+    }
 }
