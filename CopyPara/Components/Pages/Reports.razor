@@ -5,17 +5,99 @@
 @using Microsoft.AspNetCore.Authorization
 @using CopyPara.Application.Patient.Read
 @using CopyPara.Domain.Occasions
+@using ChartJs.Blazor
+@using ChartJs.Blazor.BarChart
+@using ChartJs.Blazor.Common
+@using ChartJs.Blazor.Util
 
 @inject ISender sender
 
 <h3>Reports</h3>
-
-<FluentButton @onclick="GetData"></FluentButton>
+<FluentGrid Spacing="3" Justify="@Justification" Style="background-color: var(--neutral-layer-3);">
+    <FluentGridItem xs="12" sm="6">
+        <div class="card">
+            <Chart Config="_barConfig"></Chart>
+        </div>
+    </FluentGridItem>
+    <FluentGridItem xs="12" sm="6">
+        <div class="card">
+            xs="12" sm="6"
+        </div>
+    </FluentGridItem>
+</FluentGrid>
 
 @code {
+    JustifyContent Justification = JustifyContent.FlexStart;
     public List<Occasion> _Occasions = new List<Occasion>();
+    private static string[] _labels = { "TrueBeam1", "TrueBeam2", "VitalBeam1", "VitalBeam1", "Unique" };
+    private BarConfig _barConfig;
 
-    protected async Task GetData()
+    protected override void OnInitialized()
+    {
+        GetOccasion();
+        _barConfig = getBorderConfig();
+
+        foreach (string color in _labels)
+            _barConfig.Data.Labels.Add(color);
+
+        BarDataset<int> dataset = getColorsWithQuantities();
+
+        _barConfig.Data.Datasets.Add(dataset);
+    }
+
+    private BarConfig getBorderConfig()
+    {
+        return new BarConfig(horizontal: true)
+        {
+            Options = new BarOptions()
+            {
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = false
+                },
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Usage of our machines"
+                },
+            }
+        };
+    }
+
+    private BarDataset<int> getColorsWithQuantities()
+    {
+        int[] usageData = { 6, 5, 3, 7, 8 };
+        return new BarDataset<int>(usageData, horizontal: true)
+        {
+            BackgroundColor = GetColors(usageData)
+        };
+    }
+
+    private string[] GetColors(int[] usageData)
+    {
+        List<string> colors = new List<string>();
+        string red = ColorUtil.ColorHexString(255,0,0);
+        string yellow = ColorUtil.ColorHexString(250, 238, 5);
+        string green = ColorUtil.ColorHexString(0, 250, 0);
+
+        foreach (var usage in usageData)
+        {
+            var actualUsage = (double)usage / (double)usageData.Max();
+            //Todo: Have to use different method for the coloring
+            //but need to decide max value before
+            if (actualUsage > 0.9)
+                colors.Add(red);
+            else if (actualUsage > 0.75)
+                colors.Add(yellow);
+            else
+                colors.Add(green);         
+        }
+
+        return colors.ToArray();
+    }
+
+    private async Task GetOccasion()
     {
         var occasions = await sender.Send(new ReadOccasionRequest());
 
