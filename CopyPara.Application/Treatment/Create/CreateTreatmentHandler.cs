@@ -44,37 +44,6 @@ namespace CopyPara.Application.Treatment.Create
             if (doctor == null || patient == null || cancer == null)
                 return "failure";
 
-            //var endDate = request.StartDate.AddDays(request.Fraction);
-
-            //var machineQuery = await _machineRepository.GetAllMachines(cancellationToken);
-            //var allMachines = machineQuery.ToList();
-
-            //if (request.Weight > 80 || !request.CanHoldBreath)
-            //{
-            //    allMachines.RemoveAll(x => x.MachineType.Type == Domain.Machines.AcceleratorType.VitalBeam || x.MachineType.Type == Domain.Machines.AcceleratorType.UniqueClinacOneEnergy);
-            //}
-            //List<(ulong, int)> utilizations = _utilizationRepository.GetUtilization(request.StartDate, endDate).Result.OrderBy(x => x.Item2).ToList();
-            //foreach (var mac in allMachines)
-            //{
-            //    if (!utilizations.Any(x => x.Item1 == mac.Id))
-            //    {
-            //        utilizations.Add((mac.Id, 0));
-            //    }
-            //}
-
-            //var min = 500;
-            //var machineType = allMachines.First().MachineType;
-            //foreach (var mac in allMachines)
-            //{
-            //    var utila = utilizations.Where(x => mac.MachineType.Machines.Select(x => x.Id).Contains(x.Item1)).Sum(y => y.Item2);
-            //    if(utila < min) {
-            //        min = utila;
-            //        machineType = mac.MachineType;
-            //    }
-            //}
-
-                    
-
             Domain.Treatments.Treatment treatment = new()
             {
                 DoctorId = doctor.Id,
@@ -83,7 +52,9 @@ namespace CopyPara.Application.Treatment.Create
                 Patient = patient,
                 CancerId = request.CancerId,
                 Cancer = cancer,
-                StartDate = request.StartDate
+                StartDate = request.StartDate,
+                Fraction = request.Fraction,
+                Weight = request.Weight
             };
 
             await _treatmentRepository.AddAsync(treatment, cancellationToken);
