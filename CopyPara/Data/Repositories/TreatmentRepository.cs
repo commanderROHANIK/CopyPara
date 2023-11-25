@@ -1,4 +1,5 @@
-﻿using CopyPara.Application.Treatment;
+﻿using CopyPara.Application;
+using CopyPara.Application.Treatment;
 using CopyPara.Domain.Cancers;
 using CopyPara.Domain.Treatments;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,23 @@ public sealed class TreatmentRepository : ITreatmentRepository
     public ValueTask<Cancer?> GetCancerAsync(ulong cancerId, CancellationToken cancellationToken = default)
     {
         return _context.Cancers.FindAsync(cancerId, cancellationToken);
+    }
+
+    public async Task<IEnumerable<DocTreatments>> GetDoctorsTreatments(ulong doctorId, CancellationToken cancellationToken = default)
+    {
+        var treatments = await _context.Treatments
+            .AsNoTracking()
+            .Include(x => x.Patient)
+            .Where(x => x.DoctorId == doctorId)
+            .OrderBy(x => x.StartDate)
+            .Select(x => new DocTreatments
+            {
+                PatientName = x.Patient.Name,
+                Occasions = x.Occasions.Count()
+            })
+            .ToArrayAsync(cancellationToken);
+
+        return treatments;
     }
 
     public ValueTask<Treatment?> GetTreatmentAsync(ulong treatmentId, CancellationToken cancellationToken = default)
