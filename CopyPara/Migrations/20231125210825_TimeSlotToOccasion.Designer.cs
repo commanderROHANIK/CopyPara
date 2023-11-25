@@ -3,6 +3,7 @@ using System;
 using CopyPara.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CopyPara.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231125210825_TimeSlotToOccasion")]
+    partial class TimeSlotToOccasion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -207,14 +210,6 @@ namespace CopyPara.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.ToTable("Doctors");
@@ -339,31 +334,6 @@ namespace CopyPara.Migrations
                     b.ToTable("Occasions");
                 });
 
-            modelBuilder.Entity("CopyPara.Domain.Occasions.Slot", b =>
-                {
-                    b.Property<ulong>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("End")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Start")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<ulong?>("UtilizationId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UtilizationId");
-
-                    b.ToTable("Slots");
-                });
-
             modelBuilder.Entity("CopyPara.Domain.Occasions.TimeSlot", b =>
                 {
                     b.Property<ulong>("Id")
@@ -376,9 +346,6 @@ namespace CopyPara.Migrations
                     b.Property<int>("Length")
                         .HasColumnType("INTEGER");
 
-                    b.Property<ulong?>("SlotId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("StartTime")
                         .HasColumnType("INTEGER");
 
@@ -386,8 +353,6 @@ namespace CopyPara.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SlotId");
 
                     b.ToTable("TimeSlots");
                 });
@@ -413,16 +378,10 @@ namespace CopyPara.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("BreatHolding")
-                        .HasColumnType("INTEGER");
-
                     b.Property<ulong>("CancerId")
                         .HasColumnType("INTEGER");
 
                     b.Property<ulong>("DoctorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Fraction")
                         .HasColumnType("INTEGER");
 
                     b.Property<ulong>("PatientId")
@@ -430,9 +389,6 @@ namespace CopyPara.Migrations
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
-
-                    b.Property<float>("Weight")
-                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -659,20 +615,6 @@ namespace CopyPara.Migrations
                     b.Navigation("Treatment");
                 });
 
-            modelBuilder.Entity("CopyPara.Domain.Occasions.Slot", b =>
-                {
-                    b.HasOne("CopyPara.Domain.Utilizations.Utilization", null)
-                        .WithMany("Slots")
-                        .HasForeignKey("UtilizationId");
-                });
-
-            modelBuilder.Entity("CopyPara.Domain.Occasions.TimeSlot", b =>
-                {
-                    b.HasOne("CopyPara.Domain.Occasions.Slot", null)
-                        .WithMany("TimeSlots")
-                        .HasForeignKey("SlotId");
-                });
-
             modelBuilder.Entity("CopyPara.Domain.Treatments.Treatment", b =>
                 {
                     b.HasOne("CopyPara.Domain.Cancers.Cancer", "Cancer")
@@ -784,19 +726,9 @@ namespace CopyPara.Migrations
                     b.Navigation("Machines");
                 });
 
-            modelBuilder.Entity("CopyPara.Domain.Occasions.Slot", b =>
-                {
-                    b.Navigation("TimeSlots");
-                });
-
             modelBuilder.Entity("CopyPara.Domain.Treatments.Treatment", b =>
                 {
                     b.Navigation("Occasions");
-                });
-
-            modelBuilder.Entity("CopyPara.Domain.Utilizations.Utilization", b =>
-                {
-                    b.Navigation("Slots");
                 });
 #pragma warning restore 612, 618
         }
