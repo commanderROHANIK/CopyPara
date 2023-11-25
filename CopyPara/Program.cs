@@ -1,4 +1,5 @@
 using CopyPara;
+using CopyPara.Application;
 using CopyPara.Application.Patient;
 using CopyPara.Components;
 using CopyPara.Components.Account;
@@ -43,6 +44,8 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CopyPara.Application.AssemblyReference).Assembly));
+
+builder.Services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
 builder.Services.AddTransient<IPatientRepository, PatientRepository>();
 
