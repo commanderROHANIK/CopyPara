@@ -29,5 +29,9 @@ public sealed class UtilizationRepository : IUtilizationRepository
         _context.Utilization.Update(uti);
     }
 
- 
+    public async Task<int> GetUtilizationSum(DateTime start, DateTime end, ulong machineId, CancellationToken cancellationToken = default)
+    {
+        var uti = await _context.Utilization.Where(x => x.MachineId == machineId && x.Date >= start && x.Date <= end).SumAsync(x => x.CurrentUtilization);
+        return uti;
+    }
 }

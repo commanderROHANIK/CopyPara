@@ -15,9 +15,9 @@ namespace CopyPara.Domain.Occasions
         S10
     }
 
-    static class SlotTypeExtensions
+    public static class SlotTypeExtensions
     {
-        public static int SlotQuantity(this SlotType type)
+        public static int SlotToQuantity(this SlotType type)
         {
             switch (type)
             {
@@ -28,5 +28,17 @@ namespace CopyPara.Domain.Occasions
                 default: throw new ArgumentOutOfRangeException("type");
             }
         }
+        public static SlotType TimeToSlot(int lenght)
+        {
+            switch (lenght)
+            {
+                case 30: return SlotType.S30;
+                case 15: return SlotType.S15;
+                case 12: return SlotType.S12;
+                case 10: return SlotType.S10;
+                default: throw new ArgumentOutOfRangeException("length");
+            }
+        }
+
     }
 }

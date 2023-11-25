@@ -2,6 +2,7 @@ using CopyPara;
 using CopyPara.Application;
 using CopyPara.Application.Machine;
 using CopyPara.Application.Occasion;
+using CopyPara.Application.Occasion.Scheduler;
 using CopyPara.Application.Patient;
 using CopyPara.Application.Treatment;
 using CopyPara.Application.Utilization;
@@ -58,6 +59,7 @@ builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
 builder.Services.AddScoped<IMachineRepository, MachineRepository>();
 builder.Services.AddScoped<IOccasionRepository, OccasionRepository>();
 builder.Services.AddScoped<IUtilizationRepository, UtilizationRepository>();
+builder.Services.AddScoped<IOccasionScheduler, OccassionScheduler>();
 
 var app = builder.Build();
 
