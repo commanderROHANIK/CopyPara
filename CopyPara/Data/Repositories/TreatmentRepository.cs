@@ -34,6 +34,7 @@ public sealed class TreatmentRepository : ITreatmentRepository
             .OrderBy(x => x.StartDate)
             .Select(x => new DocTreatments
             {
+                Id = x.Id,
                 PatientName = x.Patient.Name,
                 Occasions = x.Occasions.Count()
             })

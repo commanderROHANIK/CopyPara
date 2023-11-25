@@ -10,10 +10,12 @@ namespace CopyPara.Data.Repositories;
 public sealed class OccasionRepository : IOccasionRepository
 {
     private readonly ApplicationDbContext _context;
+    private readonly TimeProvider _timeProvider;
 
-    public OccasionRepository(ApplicationDbContext context)
+    public OccasionRepository(ApplicationDbContext context, TimeProvider timeProvider)
     {
         _context = context;
+        _timeProvider = timeProvider;
     }
 
     public async Task AddAsync(Occasion occasion, CancellationToken cancellationToken = default)
@@ -35,9 +37,27 @@ public sealed class OccasionRepository : IOccasionRepository
     {
         return _context.Occasions.Where(x => x.TreatmentId == treatmentId).ToArrayAsync(cancellationToken);
     }
-    
+
     public IAsyncEnumerable<Occasion> GetAllOccasions(CancellationToken cancellationToken = default)
     {
         return _context.Occasions.AsAsyncEnumerable();
+    }
+
+    public async Task DeleteOccasion(ulong doctorId, ulong treatmentId, CancellationToken cancellationToken = default)
+    {
+        var time = _timeProvider.GetUtcNow();
+
+        var removables = await _context.Occasions
+            // .AsNoTracking()
+            // .Include(x => x.Treatment)
+            .Where(x => x.TreatmentId == treatmentId)
+            // .Where(x => x.Treatment.DoctorId == doctorId)
+            .Where(x => (DateTime)(object)x.Date > time.Date)
+            .ExecuteDeleteAsync(cancellationToken);
+
+        // foreach (var removable in removables)
+        // {
+        //     _context.Occasions.Remove(removable);
+        // }
     }
 }
