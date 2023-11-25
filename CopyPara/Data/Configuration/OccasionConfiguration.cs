@@ -15,5 +15,7 @@ internal sealed class OccasionConfiguration : IEntityTypeConfiguration<Occasion>
 
         builder.HasOne(x => x.Machine)
             .WithMany(x => x.Occasions);
+
+        builder.HasOne(x => x.TimeSlot);
     }
 }
