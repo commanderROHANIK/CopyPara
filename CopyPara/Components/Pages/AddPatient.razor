@@ -1,0 +1,34 @@
+@page "/addPatient"
+@rendermode InteractiveServer
+@attribute [Authorize]
+
+@using CopyPara.Domain.Patients
+@using MediatR
+@using CopyPara.Application.Patient.Create
+@using Microsoft.AspNetCore.Authorization
+@inject ISender sender
+
+<h1>Create New Patient</h1>
+
+<EditForm FormName="createPatientForm" Model="@Patient" OnValidSubmit="@CreatePatient">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <div>
+        <FluentLabel for="name">Name:</FluentLabel>
+        <FluentTextField id="name" @bind-Value=Patient.Name></FluentTextField>
+    </div>
+    <FluentButton Type="ButtonType.Submit" Appearance="@Appearance.Accent">Create Patient</FluentButton>
+</EditForm>
+
+@code {
+    public Patient Patient { get; set; }
+
+    protected override void OnInitialized() => Patient ??= new();
+
+    private async Task CreatePatient()
+    {
+        await sender.Send(new CreatePatientRequest() { Name = Patient.Name });
+    }
+
+}

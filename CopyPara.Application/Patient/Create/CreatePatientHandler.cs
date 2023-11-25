@@ -11,10 +11,12 @@ namespace CopyPara.Application.Patient.Create;
 internal sealed class CreatePatientHandler : IRequestHandler<CreatePatientRequest, string>
 {
     private readonly IPatientRepository _patientRepository;
-
-    public CreatePatientHandler(IPatientRepository patientRepository)
+    private readonly IUnitOfWork _unitOfWork;
+    
+    public CreatePatientHandler(IPatientRepository patientRepository, IUnitOfWork unitOfWork)
     {
         _patientRepository = patientRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<string> Handle(CreatePatientRequest request, CancellationToken cancellationToken)
@@ -24,8 +26,16 @@ internal sealed class CreatePatientHandler : IRequestHandler<CreatePatientReques
             Name = request.Name
         };
 
-        await _patientRepository.AddAsync(patient, cancellationToken);
+        try
+        {
+            await _patientRepository.AddAsync(patient, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            return "Patient added successfully";
+        }
+        catch
+        {
+            return "Something went wrong";
+        }
 
-        return "valami";
     }
 }
