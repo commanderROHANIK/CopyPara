@@ -12,6 +12,6 @@ internal sealed class MachineConfiguration : IEntityTypeConfiguration<Machine>
     {
         builder.HasKey(x => x.Id);
 
-        builder.HasOne(x => x.Utilization).WithOne(x => x.Machine).HasForeignKey<Utilization>(e => e.MachineId);
+        builder.HasMany(x => x.Utilization).WithOne(x => x.Machine).HasForeignKey(e => e.MachineId);
     }
 }

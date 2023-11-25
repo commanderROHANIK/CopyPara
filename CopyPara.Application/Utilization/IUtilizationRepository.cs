@@ -10,6 +10,6 @@ namespace CopyPara.Application.Utilization
     {
         Task AddAsync(Domain.Utilizations.Utilization uti, CancellationToken cancellationToken = default);
         void Update(Domain.Utilizations.Utilization uti);
-        Task<Domain.Utilizations.Utilization> FindUtilizationAsync(DateOnly date, ulong machineId, CancellationToken cancellationToken = default);
+        Task<Domain.Utilizations.Utilization> FindUtilizationAsync(DateTime date, ulong machineId, CancellationToken cancellationToken = default);
     }
 }

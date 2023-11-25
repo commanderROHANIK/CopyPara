@@ -15,8 +15,7 @@ namespace CopyPara.Domain.Machines
         public ulong MachineTypeId { get; set; }
         public MachineType MachineType { get; set; }
         public List<Occasion> Occasions { get; set; } = [];
-        public ulong UtilizationId { get; set; }
-        public Utilization Utilization { get; set; }
+        public List<Utilization> Utilization { get; set; } = [];
 
     }
 }

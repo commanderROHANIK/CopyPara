@@ -18,7 +18,7 @@ public sealed class UtilizationRepository : IUtilizationRepository
         await _context.Utilization.AddAsync(uti, cancellationToken);
     }
 
-    public async Task<Utilization> FindUtilizationAsync(DateOnly date, ulong machineId, CancellationToken cancellationToken = default)
+    public async Task<Utilization> FindUtilizationAsync(DateTime date, ulong machineId, CancellationToken cancellationToken = default)
     {
         var uti = await _context.Utilization.FirstOrDefaultAsync(x => x.Date == date && x.MachineId == machineId, cancellationToken);
         return uti;

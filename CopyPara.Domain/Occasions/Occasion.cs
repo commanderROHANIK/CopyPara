@@ -11,7 +11,9 @@ namespace CopyPara.Domain.Occasions
     public class Occasion
     {
         public ulong Id { get; set; }
+
         public DateTime Date { get; set; }
+        public TimeSlot TimeSlot { get; set; }
 
         public ulong TreatmentId { get; set; }
         public Treatment Treatment { get; set; }
