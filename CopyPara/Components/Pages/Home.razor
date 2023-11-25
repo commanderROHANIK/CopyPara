@@ -1,7 +1,19 @@
 ﻿@page "/"
-
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+@foreach (var card in cardData)
+{
+    <SupporterCardLayout Title=@card.Item1 Text=@card.Item2 Link=@card.Item3/>
+    <br/>
+}
 
-Welcome to your new Fluent Blazor app.
+@code{
+
+    List<(string, string,string)> cardData = new()
+    {
+        ("American Cancer Society", "The American Cancer Society is a leading nonprofit committed to eradicating cancer through research, education, and support. It champions groundbreaking initiatives, offers patient assistance, and drives awareness to improve lives affected by cancer.", "https://www.cancer.org/donate.html"),
+        ("Cancer Research Institute", "The Cancer Research Institute is a pioneering nonprofit focused on advancing immunotherapy as a potent weapon against cancer. Through innovative research, funding, and education, it aims to harness the body's immune system to combat cancer effectively. Their work fuels groundbreaking discoveries and fosters hope for more effective, targeted cancer treatments.", "https://cancerresearch.org/ways-to-give"),
+        ("National Cancer Institute", "The National Cancer Institute (NCI) is a vital part of the National Institutes of Health, leading the nation's cancer research efforts. It supports and conducts research, training, and disseminates information to prevent, detect, and treat cancer. The NCI collaborates with scientists, institutions, and communities to drive progress in understanding, managing, and ultimately conquering cancer's complexities.", "https://www.cancer.gov/about-nci/overview/contributing"),
+    };
+
+}

@@ -1,4 +1,7 @@
-﻿using CopyPara.Application.Patient;
+﻿using CopyPara.Application.Machine;
+using CopyPara.Application.Occasion.Scheduler;
+using CopyPara.Application.Patient;
+using CopyPara.Application.Utilization;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,16 +15,25 @@ namespace CopyPara.Application.Treatment.Create
     {
         private readonly ITreatmentRepository _treatmentRepository;
         private readonly IPatientRepository _patientRepository;
+        private readonly IUtilizationRepository _utilizationRepository;
+        private readonly IMachineRepository _machineRepository;
+        private readonly IOccasionScheduler _occasionScheduler;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAuthDoctor _auth;
 
         public CreateTreatmentHandler(ITreatmentRepository treatmentRepository,
                                       IPatientRepository patientRepository,
+                                      IUtilizationRepository utilizationRepository,
+                                      IMachineRepository machineRepository,
+                                      IOccasionScheduler occasionScheduler,
                                       IUnitOfWork unitOfWork,
                                       IAuthDoctor auth)
         {
             _treatmentRepository = treatmentRepository;
             _patientRepository = patientRepository;
+            _utilizationRepository = utilizationRepository;
+            _machineRepository = machineRepository;
+            _occasionScheduler = occasionScheduler;
             _unitOfWork = unitOfWork;
             _auth = auth;
         }
@@ -44,11 +56,16 @@ namespace CopyPara.Application.Treatment.Create
                 Patient = patient,
                 CancerId = request.CancerId,
                 Cancer = cancer,
+                StartDate = request.StartDate,
+                Fraction = request.Fraction,
+                Weight = request.Weight
             };
 
             await _treatmentRepository.AddAsync(treatment, cancellationToken);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            var asd = _occasionScheduler.MachineType(treatment, cancellationToken);
 
             return "success";
         }

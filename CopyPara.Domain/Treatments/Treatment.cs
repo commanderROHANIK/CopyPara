@@ -9,6 +9,9 @@ public class Treatment
 {
     public ulong Id { get; set; }
     public DateTime StartDate { get; set; }
+    public float Weight {  get; set; }
+    public int Fraction {  get; set; }
+    public bool BreatHolding { get; set; }
 
     public ulong PatientId { get; set; }
     public Patient Patient { get; set; }

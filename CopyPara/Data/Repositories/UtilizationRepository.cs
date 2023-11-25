@@ -34,4 +34,18 @@ public sealed class UtilizationRepository : IUtilizationRepository
         var uti = await _context.Utilization.Where(x => x.MachineId == machineId && x.Date >= start && x.Date <= end).SumAsync(x => x.CurrentUtilization);
         return uti;
     }
+
+    public async Task<List<(ulong,int)>> GetUtilization(DateTime start, DateTime end, CancellationToken cancellationToken = default)
+    {
+        IQueryable<IGrouping<ulong, Utilization>> utis = _context.Utilization.Where(x => x.Date >= start && x.Date <= end).GroupBy(x => x.MachineId);
+
+        List<(ulong,int)> result = [];
+
+        foreach(var uti in utis)
+        {
+            var utilization = uti.Sum(x => x.CurrentUtilization);
+            result.Add(new (uti.Key, utilization));
+        }    
+        return result;
+    }
 }

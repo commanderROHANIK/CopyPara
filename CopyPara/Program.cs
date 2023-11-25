@@ -9,9 +9,11 @@ using CopyPara.Application.Utilization;
 using CopyPara.Components;
 using CopyPara.Components.Account;
 using CopyPara.Data;
+using CopyPara.Services;
 using CopyPara.Data.Repositories;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FluentUI.AspNetCore.Components;
@@ -21,6 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddSingleton<IEmailSender, GmailEmailSender>();
 
 builder.Services.AddFluentUIComponents();
 

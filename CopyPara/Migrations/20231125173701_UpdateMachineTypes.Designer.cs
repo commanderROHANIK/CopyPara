@@ -3,6 +3,7 @@ using System;
 using CopyPara.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CopyPara.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231125173701_UpdateMachineTypes")]
+    partial class UpdateMachineTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -207,14 +210,6 @@ namespace CopyPara.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.ToTable("Doctors");
@@ -361,7 +356,7 @@ namespace CopyPara.Migrations
 
                     b.HasIndex("UtilizationId");
 
-                    b.ToTable("Slots");
+                    b.ToTable("Slot");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Occasions.TimeSlot", b =>
@@ -389,7 +384,7 @@ namespace CopyPara.Migrations
 
                     b.HasIndex("SlotId");
 
-                    b.ToTable("TimeSlots");
+                    b.ToTable("TimeSlot");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Patients.Patient", b =>
@@ -413,16 +408,13 @@ namespace CopyPara.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("BreatHolding")
-                        .HasColumnType("INTEGER");
-
                     b.Property<ulong>("CancerId")
                         .HasColumnType("INTEGER");
 
                     b.Property<ulong>("DoctorId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Fraction")
+                    b.Property<ulong?>("MachineTypeId")
                         .HasColumnType("INTEGER");
 
                     b.Property<ulong>("PatientId")
@@ -431,14 +423,13 @@ namespace CopyPara.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<float>("Weight")
-                        .HasColumnType("REAL");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CancerId");
 
                     b.HasIndex("DoctorId");
+
+                    b.HasIndex("MachineTypeId");
 
                     b.HasIndex("PatientId");
 
@@ -687,6 +678,10 @@ namespace CopyPara.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CopyPara.Domain.Machines.MachineType", null)
+                        .WithMany("Treatments")
+                        .HasForeignKey("MachineTypeId");
+
                     b.HasOne("CopyPara.Domain.Patients.Patient", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientId")
@@ -782,6 +777,8 @@ namespace CopyPara.Migrations
             modelBuilder.Entity("CopyPara.Domain.Machines.MachineType", b =>
                 {
                     b.Navigation("Machines");
+
+                    b.Navigation("Treatments");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Occasions.Slot", b =>

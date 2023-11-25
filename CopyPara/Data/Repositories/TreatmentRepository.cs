@@ -20,6 +20,11 @@ public sealed class TreatmentRepository : ITreatmentRepository
         await _context.Treatments.AddAsync(treatment, cancellationToken);
     }
 
+    public Task<Treatment[]> GetAllTreatment(CancellationToken cancellationToken = default)
+    {
+        return _context.Treatments.Include(x => x.Patient).Include(x => x.Cancer).ToArrayAsync(cancellationToken);
+    }
+
     public ValueTask<Cancer?> GetCancerAsync(ulong cancerId, CancellationToken cancellationToken = default)
     {
         return _context.Cancers.FindAsync(cancerId, cancellationToken);
