@@ -13,25 +13,33 @@ namespace CopyPara.Application.Treatment.Create
         private readonly ITreatmentRepository _treatmentRepository;
         private readonly IPatientRepository _patientRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAuthDoctor _auth;
 
-        public CreateTreatmentHandler(ITreatmentRepository treatmentRepository, IPatientRepository patientRepository, IUnitOfWork unitOfWork)
+        public CreateTreatmentHandler(ITreatmentRepository treatmentRepository,
+                                      IPatientRepository patientRepository,
+                                      IUnitOfWork unitOfWork,
+                                      IAuthDoctor auth)
         {
             _treatmentRepository = treatmentRepository;
             _patientRepository = patientRepository;
             _unitOfWork = unitOfWork;
+            _auth = auth;
         }
 
         public async Task<string> Handle(CreateTreatmentRequest request, CancellationToken cancellationToken)
         {
-            var patient = await _patientRepository.GetPatientAsync(request.PatientId);
-            var cancer = await _treatmentRepository.GetCancerAsync(request.CancerId);
+            var doctor = await _auth.GetAuthenticatedDoctorAsync(cancellationToken);
 
-            if (patient == null || cancer == null)
+            var patient = await _patientRepository.GetPatientAsync(request.PatientId, cancellationToken);
+            var cancer = await _treatmentRepository.GetCancerAsync(request.CancerId, cancellationToken);
+
+            if (doctor == null || patient == null || cancer == null)
                 return "failure";
-            
+
             Domain.Treatments.Treatment treatment = new()
             {
-                Id = request.Id,
+                DoctorId = doctor.Id,
+                Doctor = doctor,
                 PatientId = request.PatientId,
                 Patient = patient,
                 CancerId = request.CancerId,

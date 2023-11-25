@@ -11,6 +11,7 @@ namespace CopyPara.Application.Occasion
         Task AddAsync(Domain.Occasions.Occasion occasion, CancellationToken cancellationToken = default);
         ValueTask<Domain.Occasions.Occasion?> GetOccasionAsync(ulong occasionId, CancellationToken cancellationToken = default);
         Task<Domain.Occasions.Occasion[]> GetOccasionsForTreatment(ulong treatmentId, CancellationToken cancellationToken = default);
+        IAsyncEnumerable<Domain.Occasions.Occasion> GetAllOccasions(CancellationToken cancellationToken = default);
         Task<Domain.Occasions.Occasion[]> GetOccasionsByDayPerMachine(DateTime date, ulong machineId, CancellationToken cancellationToken = default);
     }
 }

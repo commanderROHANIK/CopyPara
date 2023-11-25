@@ -3,6 +3,7 @@ using System;
 using CopyPara.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CopyPara.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231125074620_AddData")]
+    partial class AddData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -123,78 +126,6 @@ namespace CopyPara.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cancers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1ul,
-                            AvgTimeMins = 12,
-                            CancerType = 4,
-                            Fractions = "5,10,12"
-                        },
-                        new
-                        {
-                            Id = 2ul,
-                            AvgTimeMins = 12,
-                            CancerType = 1,
-                            Fractions = "5,10,12"
-                        },
-                        new
-                        {
-                            Id = 3ul,
-                            AvgTimeMins = 20,
-                            CancerType = 2,
-                            Fractions = "5,10,12"
-                        },
-                        new
-                        {
-                            Id = 4ul,
-                            AvgTimeMins = 10,
-                            CancerType = 6,
-                            Fractions = "1,5,10,13,25,30"
-                        },
-                        new
-                        {
-                            Id = 5ul,
-                            AvgTimeMins = 30,
-                            CancerType = 0,
-                            Fractions = "13,17,20,30"
-                        },
-                        new
-                        {
-                            Id = 6ul,
-                            AvgTimeMins = 12,
-                            CancerType = 3,
-                            Fractions = "5,10,15,25,30,33,35"
-                        },
-                        new
-                        {
-                            Id = 7ul,
-                            AvgTimeMins = 12,
-                            CancerType = 7,
-                            Fractions = "1,5,10,15,20,25,30,33"
-                        },
-                        new
-                        {
-                            Id = 8ul,
-                            AvgTimeMins = 15,
-                            CancerType = 8,
-                            Fractions = "3,5,8"
-                        },
-                        new
-                        {
-                            Id = 9ul,
-                            AvgTimeMins = 12,
-                            CancerType = 5,
-                            Fractions = "1,3,5,10,15,22,23,25,28,35"
-                        },
-                        new
-                        {
-                            Id = 10ul,
-                            AvgTimeMins = 10,
-                            CancerType = 9,
-                            Fractions = "5,10,12"
-                        });
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Doctors.Doctor", b =>
@@ -233,43 +164,6 @@ namespace CopyPara.Migrations
                     b.HasIndex("MachineTypeId");
 
                     b.ToTable("Machines");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 5ul,
-                            MachineTypeId = 1ul,
-                            Name = "Unique - Clinac",
-                            UtilizationId = 0ul
-                        },
-                        new
-                        {
-                            Id = 3ul,
-                            MachineTypeId = 2ul,
-                            Name = "VitalBeam 1",
-                            UtilizationId = 0ul
-                        },
-                        new
-                        {
-                            Id = 4ul,
-                            MachineTypeId = 2ul,
-                            Name = "VitalBeam 2",
-                            UtilizationId = 0ul
-                        },
-                        new
-                        {
-                            Id = 1ul,
-                            MachineTypeId = 3ul,
-                            Name = "TrueBeam 1",
-                            UtilizationId = 0ul
-                        },
-                        new
-                        {
-                            Id = 2ul,
-                            MachineTypeId = 3ul,
-                            Name = "TrueBeam 2",
-                            UtilizationId = 0ul
-                        });
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Machines.MachineType", b =>
@@ -288,26 +182,6 @@ namespace CopyPara.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MachineTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1ul,
-                            Features = "[]",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 2ul,
-                            Features = "[3,2]",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 3ul,
-                            Features = "[0,1,3,2]",
-                            Type = 0
-                        });
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Occasions.Occasion", b =>

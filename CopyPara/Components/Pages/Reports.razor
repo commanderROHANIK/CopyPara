@@ -1,0 +1,28 @@
+@page "/reports"
+@rendermode InteractiveServer
+@attribute [Authorize]
+
+@using Microsoft.AspNetCore.Authorization
+@using CopyPara.Application.Patient.Read
+@using CopyPara.Domain.Occasions
+
+@inject ISender sender
+
+<h3>Reports</h3>
+
+<FluentButton @onclick="GetData"></FluentButton>
+
+@code {
+    public List<Occasion> _Occasions = new List<Occasion>();
+
+    protected async Task GetData()
+    {
+        var occasions = await sender.Send(new ReadOccasionRequest());
+
+        await foreach (var occasion in occasions)
+        {
+            _Occasions.Add(occasion);
+        }
+    }
+
+}

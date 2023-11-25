@@ -35,4 +35,9 @@ public sealed class OccasionRepository : IOccasionRepository
     {
         return _context.Occasions.Where(x => x.TreatmentId == treatmentId).ToArrayAsync(cancellationToken);
     }
+    
+    public IAsyncEnumerable<Occasion> GetAllOccasions(CancellationToken cancellationToken = default)
+    {
+        return _context.Occasions.AsAsyncEnumerable();
+    }
 }
