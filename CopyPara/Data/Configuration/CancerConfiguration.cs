@@ -12,7 +12,7 @@ public sealed class CancerConfiguration  : IEntityTypeConfiguration<Cancer>
         builder.HasMany(x => x.Treatments)
             .WithOne(x => x.Cancer);
 
-        // FillData(builder);
+        FillData(builder);
     }
 
     private void FillData(EntityTypeBuilder<Cancer> builder)

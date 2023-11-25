@@ -20,7 +20,7 @@ internal sealed class MachineTypeConfiguration : IEntityTypeConfiguration<Machin
 
         builder.HasMany(x => x.Cancers).WithMany(x => x.MachineTypes);
 
-        // FillData(builder);
+        FillData(builder);
     }
 
     private void FillData(EntityTypeBuilder<MachineType> builder)
