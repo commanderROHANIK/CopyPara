@@ -1,3 +1,4 @@
+using CopyPara.Application;
 using CopyPara.Domain.Cancers;
 using CopyPara.Domain.Doctors;
 using CopyPara.Domain.Machines;
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CopyPara.Data;
 
-public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
+public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options), IUnitOfWork
 {
     public DbSet<Patient> Patients => Set<Patient>();
 
@@ -30,5 +31,10 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
         base.OnModelCreating(builder);
 
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+    }
+
+    public Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        return SaveChangesAsync();
     }
 }
