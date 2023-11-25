@@ -27,11 +27,13 @@
             <hr/>
             <FluentValidationSummary class="text-danger" role="alert"/>
             <FluentStack Orientation="Orientation.Vertical">
+                <FluentTextField Name="Input.FirstName" @bind-Value="Input.FirstName" Required="true" Placeholder="First name" Label="First name" Style="width: 100%"/>
+                <FluentTextField Name="Input.LastName" @bind-Value="Input.LastName" Required="true" Placeholder="Last name" Label="Last name" Style="width: 100%"/>
                 <FluentTextField Name="Input.Email" @bind-Value="Input.Email" AutoComplete="username" Required="true" Placeholder="name@example.com" Label="Email" Style="width: 100%"/>
                 <ValidationMessage For="() => Input.Email" class="text-danger"/>
-                <FluentTextField type="password" Name="Input.Password" @bind-Value="Input.Password" AutoComplete="current-password" Required="true" Placeholder="password" Label="Password" Style="width: 100%"/>
+                <FluentTextField type="password" Name="Input.Password" @bind-Value="Input.Password" AutoComplete="current-password" Required="true" Placeholder="Password" Label="Password" Style="width: 100%"/>
                 <ValidationMessage For="() => Input.Password" class="text-danger"/>
-                <FluentTextField type="password" Name="Input.ConfirmPassword" @bind-Value="Input.ConfirmPassword" AutoComplete="new-password" Required="true" Placeholder="password" Label="Confirm Password" Style="width: 100%"/>
+                <FluentTextField type="password" Name="Input.ConfirmPassword" @bind-Value="Input.ConfirmPassword" AutoComplete="new-password" Required="true" Placeholder="Password again" Label="Confirm Password" Style="width: 100%"/>
                 <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger"/>
                 <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%">Registrate</FluentButton>
             </FluentStack>
@@ -55,6 +57,9 @@
         var doctor = CreateDoctor();
         var user = CreateUser();
 
+        doctor.FirstName = Input.FirstName;
+        doctor.LastName = Input.LastName;
+        
         doctor.ApplicationUserId = user.Id;
         user.Doctor = doctor;
 
@@ -128,6 +133,14 @@
 
     private sealed class InputModel
     {
+        [Required]
+        [Display(Name = "FirstName")]
+        public string FirstName { get; set; } = "";
+        
+        [Required]
+        [Display(Name = "LastName")]
+        public string LastName { get; set; } = "";
+        
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
