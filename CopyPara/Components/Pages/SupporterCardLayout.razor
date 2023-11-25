@@ -1,0 +1,25 @@
+@using System
+@using Microsoft.AspNetCore.Components
+
+<FluentCard>
+    <h3>@Title</h3>
+    <p>
+        @Text
+    </p>
+    <FluentAnchor Appearance="Appearance.Accent" href=@Link>
+        Support
+    </FluentAnchor>
+</FluentCard>
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public string Link { get; set; }
+
+}
