@@ -1,9 +1,11 @@
 @page "/addPatient"
 @rendermode InteractiveServer
+@attribute [Authorize]
 
 @using CopyPara.Domain.Patients
 @using MediatR
 @using CopyPara.Application.Patient.Create
+@using Microsoft.AspNetCore.Authorization
 @inject ISender sender
 
 <h1>Create New Patient</h1>
