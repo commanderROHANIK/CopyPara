@@ -29,6 +29,10 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
 
     public DbSet<Utilization> Utilization => Set<Utilization>();
 
+    public DbSet<Slot> Slots => Set<Slot>();
+
+    public DbSet<TimeSlot> TimeSlots => Set<TimeSlot>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

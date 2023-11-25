@@ -13,5 +13,6 @@ namespace CopyPara.Application.Occasion
         Task<Domain.Occasions.Occasion[]> GetOccasionsForTreatment(ulong treatmentId, CancellationToken cancellationToken = default);
         IAsyncEnumerable<Domain.Occasions.Occasion> GetAllOccasions(CancellationToken cancellationToken = default);
         Task<Domain.Occasions.Occasion[]> GetOccasionsByDayPerMachine(DateTime date, ulong machineId, CancellationToken cancellationToken = default);
+        Task DeleteOccasion(ulong doctorId, ulong treatmentId, CancellationToken cancellationToken = default);
     }
 }

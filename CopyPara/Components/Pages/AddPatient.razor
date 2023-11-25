@@ -29,6 +29,7 @@
     private async Task CreatePatient()
     {
         await sender.Send(new CreatePatientRequest() { Name = Patient.Name });
+        Patient.Name = "";
     }
 
 }

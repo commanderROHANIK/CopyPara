@@ -207,6 +207,14 @@ namespace CopyPara.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Doctors");
@@ -353,7 +361,7 @@ namespace CopyPara.Migrations
 
                     b.HasIndex("UtilizationId");
 
-                    b.ToTable("Slot");
+                    b.ToTable("Slots");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Occasions.TimeSlot", b =>
@@ -381,7 +389,7 @@ namespace CopyPara.Migrations
 
                     b.HasIndex("SlotId");
 
-                    b.ToTable("TimeSlot");
+                    b.ToTable("TimeSlots");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Patients.Patient", b =>

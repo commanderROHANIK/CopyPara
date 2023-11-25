@@ -6,8 +6,8 @@ using CopyPara.Domain.Utilizations;
 
 namespace CopyPara.Application.Occasion.Scheduler
 {
-    public class OccassionScheduler : IOccasionScheduler 
-    { 
+    public class OccassionScheduler : IOccasionScheduler
+    {
         private readonly IUtilizationRepository _utilizationRepository;
         private readonly IMachineRepository _machineRepository;
 
@@ -122,6 +122,6 @@ namespace CopyPara.Application.Occasion.Scheduler
                 yield return day;
         }
 
-        
+
     }
 }
