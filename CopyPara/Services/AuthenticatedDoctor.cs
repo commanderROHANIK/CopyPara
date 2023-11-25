@@ -4,7 +4,7 @@ using CopyPara.Data;
 using CopyPara.Domain.Doctors;
 using Microsoft.EntityFrameworkCore;
 
-namespace CopyPara;
+namespace CopyPara.Services;
 
 public sealed class AuthenticatedDoctor : IAuthDoctor
 {
