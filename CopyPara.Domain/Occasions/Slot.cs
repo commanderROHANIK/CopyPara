@@ -12,6 +12,7 @@ namespace CopyPara.Domain.Occasions
         public SlotType Type { get; set; }
         public int Start {  get; set; }
         public int End { get; set; }
+        public List<TimeSlot> TimeSlots { get; set; }
 
     }
 }
