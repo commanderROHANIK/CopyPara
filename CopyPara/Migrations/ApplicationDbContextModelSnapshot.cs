@@ -225,9 +225,6 @@ namespace CopyPara.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<ulong>("UtilizationId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MachineTypeId");
@@ -239,36 +236,31 @@ namespace CopyPara.Migrations
                         {
                             Id = 5ul,
                             MachineTypeId = 1ul,
-                            Name = "Unique - Clinac",
-                            UtilizationId = 0ul
+                            Name = "Unique - Clinac"
                         },
                         new
                         {
                             Id = 3ul,
                             MachineTypeId = 2ul,
-                            Name = "VitalBeam 1",
-                            UtilizationId = 0ul
+                            Name = "VitalBeam 1"
                         },
                         new
                         {
                             Id = 4ul,
                             MachineTypeId = 2ul,
-                            Name = "VitalBeam 2",
-                            UtilizationId = 0ul
+                            Name = "VitalBeam 2"
                         },
                         new
                         {
                             Id = 1ul,
                             MachineTypeId = 3ul,
-                            Name = "TrueBeam 1",
-                            UtilizationId = 0ul
+                            Name = "TrueBeam 1"
                         },
                         new
                         {
                             Id = 2ul,
                             MachineTypeId = 3ul,
-                            Name = "TrueBeam 2",
-                            UtilizationId = 0ul
+                            Name = "TrueBeam 2"
                         });
                 });
 
@@ -322,6 +314,9 @@ namespace CopyPara.Migrations
                     b.Property<ulong>("MachineId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<ulong>("TimeSlotId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<ulong>("TreatmentId")
                         .HasColumnType("INTEGER");
 
@@ -329,9 +324,64 @@ namespace CopyPara.Migrations
 
                     b.HasIndex("MachineId");
 
+                    b.HasIndex("TimeSlotId");
+
                     b.HasIndex("TreatmentId");
 
                     b.ToTable("Occasions");
+                });
+
+            modelBuilder.Entity("CopyPara.Domain.Occasions.Slot", b =>
+                {
+                    b.Property<ulong>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("End")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Start")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong?>("UtilizationId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UtilizationId");
+
+                    b.ToTable("Slot");
+                });
+
+            modelBuilder.Entity("CopyPara.Domain.Occasions.TimeSlot", b =>
+                {
+                    b.Property<ulong>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EndTime")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Length")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong?>("SlotId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StartTime")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("ToDelete")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SlotId");
+
+                    b.ToTable("TimeSlot");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Patients.Patient", b =>
@@ -384,7 +434,7 @@ namespace CopyPara.Migrations
                     b.Property<int>("CurrentUtilization")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly>("Date")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
                     b.Property<ulong>("MachineId")
@@ -392,8 +442,7 @@ namespace CopyPara.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MachineId")
-                        .IsUnique();
+                    b.HasIndex("MachineId");
 
                     b.ToTable("Utilization");
                 });
@@ -571,6 +620,12 @@ namespace CopyPara.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CopyPara.Domain.Occasions.TimeSlot", "TimeSlot")
+                        .WithMany()
+                        .HasForeignKey("TimeSlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CopyPara.Domain.Treatments.Treatment", "Treatment")
                         .WithMany("Occasions")
                         .HasForeignKey("TreatmentId")
@@ -579,7 +634,23 @@ namespace CopyPara.Migrations
 
                     b.Navigation("Machine");
 
+                    b.Navigation("TimeSlot");
+
                     b.Navigation("Treatment");
+                });
+
+            modelBuilder.Entity("CopyPara.Domain.Occasions.Slot", b =>
+                {
+                    b.HasOne("CopyPara.Domain.Utilizations.Utilization", null)
+                        .WithMany("Slots")
+                        .HasForeignKey("UtilizationId");
+                });
+
+            modelBuilder.Entity("CopyPara.Domain.Occasions.TimeSlot", b =>
+                {
+                    b.HasOne("CopyPara.Domain.Occasions.Slot", null)
+                        .WithMany("TimeSlots")
+                        .HasForeignKey("SlotId");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Treatments.Treatment", b =>
@@ -612,8 +683,8 @@ namespace CopyPara.Migrations
             modelBuilder.Entity("CopyPara.Domain.Utilizations.Utilization", b =>
                 {
                     b.HasOne("CopyPara.Domain.Machines.Machine", "Machine")
-                        .WithOne("Utilization")
-                        .HasForeignKey("CopyPara.Domain.Utilizations.Utilization", "MachineId")
+                        .WithMany("Utilization")
+                        .HasForeignKey("MachineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -685,8 +756,7 @@ namespace CopyPara.Migrations
                 {
                     b.Navigation("Occasions");
 
-                    b.Navigation("Utilization")
-                        .IsRequired();
+                    b.Navigation("Utilization");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Machines.MachineType", b =>
@@ -694,9 +764,19 @@ namespace CopyPara.Migrations
                     b.Navigation("Machines");
                 });
 
+            modelBuilder.Entity("CopyPara.Domain.Occasions.Slot", b =>
+                {
+                    b.Navigation("TimeSlots");
+                });
+
             modelBuilder.Entity("CopyPara.Domain.Treatments.Treatment", b =>
                 {
                     b.Navigation("Occasions");
+                });
+
+            modelBuilder.Entity("CopyPara.Domain.Utilizations.Utilization", b =>
+                {
+                    b.Navigation("Slots");
                 });
 #pragma warning restore 612, 618
         }
