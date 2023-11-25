@@ -51,10 +51,6 @@
 
     private async Task SelectPatient(Patient patient)
     {
-        if (patient is null) {
-            Console.WriteLine("Krumpli21");
-        }
-
         await Dialog.CloseAsync(patient);
     }
 }

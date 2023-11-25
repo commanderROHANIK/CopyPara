@@ -8,6 +8,7 @@ namespace CopyPara.Application.Treatment
         Task<GetCancer.Cancer[]> GetCancersForSelectAsync(CancellationToken cancellationToken = default);
         ValueTask<Cancer?> GetCancerAsync(ulong cancerId, CancellationToken cancellationToken = default);
         ValueTask<Domain.Treatments.Treatment?> GetTreatmentAsync(ulong treatmentId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<DocTreatments>> GetDoctorsTreatments(ulong doctorId, CancellationToken cancellationToken = default);
         Task<Domain.Treatments.Treatment[]> GetAllTreatment(CancellationToken cancellationToken = default);
     }
 }
