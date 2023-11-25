@@ -1,9 +1,7 @@
 ﻿using System.Security.Claims;
-using CopyPara.Application;
 using CopyPara.Data;
+using CopyPara.Application;
 using CopyPara.Domain.Doctors;
-using CopyPara.Services.Application;
-using CopyPara.Services.Domain.Doctors;
 using Microsoft.EntityFrameworkCore;
 
 namespace CopyPara.Services;
