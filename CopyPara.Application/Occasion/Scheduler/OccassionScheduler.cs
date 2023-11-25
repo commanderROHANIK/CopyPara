@@ -18,7 +18,7 @@ namespace CopyPara.Application.Occasion.Scheduler
             _machineRepository = machineRepository;
         }
 
-        public async void MachineType(Domain.Treatments.Treatment request, CancellationToken cancellationToken)
+        public async Task<MachineType> MachineType(Domain.Treatments.Treatment request, CancellationToken cancellationToken)
         {
             var endDate = request.StartDate.AddDays(request.Fraction);
 
@@ -50,7 +50,7 @@ namespace CopyPara.Application.Occasion.Scheduler
                 }
             }
 
-
+            return machineType;
 
         }
 

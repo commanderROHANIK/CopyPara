@@ -1,4 +1,5 @@
 ﻿using CopyPara.Application.Machine;
+using CopyPara.Application.Occasion.Scheduler;
 using CopyPara.Application.Patient;
 using CopyPara.Application.Utilization;
 using MediatR;
@@ -16,6 +17,7 @@ namespace CopyPara.Application.Treatment.Create
         private readonly IPatientRepository _patientRepository;
         private readonly IUtilizationRepository _utilizationRepository;
         private readonly IMachineRepository _machineRepository;
+        private readonly IOccasionScheduler _occasionScheduler;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAuthDoctor _auth;
 
@@ -23,6 +25,7 @@ namespace CopyPara.Application.Treatment.Create
                                       IPatientRepository patientRepository,
                                       IUtilizationRepository utilizationRepository,
                                       IMachineRepository machineRepository,
+                                      IOccasionScheduler occasionScheduler,
                                       IUnitOfWork unitOfWork,
                                       IAuthDoctor auth)
         {
@@ -30,6 +33,7 @@ namespace CopyPara.Application.Treatment.Create
             _patientRepository = patientRepository;
             _utilizationRepository = utilizationRepository;
             _machineRepository = machineRepository;
+            _occasionScheduler = occasionScheduler;
             _unitOfWork = unitOfWork;
             _auth = auth;
         }
@@ -60,6 +64,8 @@ namespace CopyPara.Application.Treatment.Create
             await _treatmentRepository.AddAsync(treatment, cancellationToken);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            var asd = _occasionScheduler.MachineType(treatment, cancellationToken);
 
             return "success";
         }
