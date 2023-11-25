@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @attribute [Authorize]
 
+@using CopyPara.Application.Room.AddPatientToRoom
 @using CopyPara.Domain.Patients
 @using MediatR
 @using CopyPara.Application.Patient.Create
@@ -10,25 +11,39 @@
 
 <h1>Create New Patient</h1>
 
-<EditForm FormName="createPatientForm" Model="@Patient" OnValidSubmit="@CreatePatient">
-    <DataAnnotationsValidator/>
-    <ValidationSummary/>
+<EditForm FormName="createPatientForm" Model="@Patient" OnSubmit="@CreatePatient">
 
     <div>
         <FluentLabel for="name">Name:</FluentLabel>
-        <FluentTextField id="name" @bind-Value=Patient.Name></FluentTextField>
+        <FluentTextField id="name" @bind-Value=Patient.Name></FluentTextField>  
+        <FluentRadioGroup Name="numbers" @bind-Value=Patient.Gender Label="Gender">
+            <FluentRadio Value=@("Male")>Male</FluentRadio>
+            <FluentRadio Value=@("Female")>Female</FluentRadio>
+        </FluentRadioGroup>
+        <FluentRadioGroup Name="numbers" @bind-Value=Patient.Condition Label="Condition">
+            <FluentRadio Value=@(Condition.Disabled)>Disabled</FluentRadio>
+            <FluentRadio Value=@(Condition.Wheelchair)>Wheelchaired</FluentRadio>
+            <FluentRadio Value=@(Condition.Walking)>Walking</FluentRadio>
+        </FluentRadioGroup>
+        <FluentRadioGroup Name="numbers" @bind-Value=IsInpatient Label="Status">
+            <FluentRadio Value=@(true)>Inpatient</FluentRadio>
+            <FluentRadio Value=@(false)>Not inpatient</FluentRadio>
+        </FluentRadioGroup>
     </div>
     <FluentButton Type="ButtonType.Submit" Appearance="@Appearance.Accent">Create Patient</FluentButton>
 </EditForm>
 
 @code {
     public Patient Patient { get; set; }
+    public bool IsInpatient { get; set; } 
 
     protected override void OnInitialized() => Patient ??= new();
 
     private async Task CreatePatient()
     {
-        await sender.Send(new CreatePatientRequest() { Name = Patient.Name });
+        await sender.Send(new CreatePatientRequest() { Name = Patient.Name, Condition = Patient.Condition, Gender = Patient.Gender });
+
+        await sender.Send(new AddPatientToRoomRequest() { PatientId = Patient.Id });
         Patient.Name = "";
     }
 

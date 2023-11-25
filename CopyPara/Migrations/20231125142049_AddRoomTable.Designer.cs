@@ -3,6 +3,7 @@ using System;
 using CopyPara.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CopyPara.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231125142049_AddRoomTable")]
+    partial class AddRoomTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -207,14 +210,6 @@ namespace CopyPara.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.ToTable("Doctors");
@@ -361,7 +356,7 @@ namespace CopyPara.Migrations
 
                     b.HasIndex("UtilizationId");
 
-                    b.ToTable("Slots");
+                    b.ToTable("Slot");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Occasions.TimeSlot", b =>
@@ -389,7 +384,7 @@ namespace CopyPara.Migrations
 
                     b.HasIndex("SlotId");
 
-                    b.ToTable("TimeSlots");
+                    b.ToTable("TimeSlot");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Patients.Patient", b =>
@@ -398,18 +393,18 @@ namespace CopyPara.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Condition")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsInpatient")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<ulong?>("RoomId")
+                    b.Property<ulong>("RoomId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -428,18 +423,12 @@ namespace CopyPara.Migrations
                     b.Property<int>("NumberOfBeds")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("OccupiedBeds")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RoomType")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("WithBath")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Room");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Treatments.Treatment", b =>
@@ -448,26 +437,14 @@ namespace CopyPara.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("BreatHolding")
-                        .HasColumnType("INTEGER");
-
                     b.Property<ulong>("CancerId")
                         .HasColumnType("INTEGER");
 
                     b.Property<ulong>("DoctorId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Fraction")
-                        .HasColumnType("INTEGER");
-
                     b.Property<ulong>("PatientId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<float>("Weight")
-                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -712,7 +689,9 @@ namespace CopyPara.Migrations
                 {
                     b.HasOne("CopyPara.Domain.Rooms.Room", "Room")
                         .WithMany("Patients")
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Room");
                 });
