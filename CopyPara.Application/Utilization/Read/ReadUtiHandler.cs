@@ -26,10 +26,10 @@ public class ReadUtiHandler : IRequestHandler<ReadUtiRequest, List<int>>
     public async Task<List<int>> Handle(ReadUtiRequest request, CancellationToken cancellationToken)
     {
         List<int> result = [];
-        var machines = _machineRepository.GetAllMachines(cancellationToken).ToString();
-        foreach (var machine in machines)
+        var machines = _machineRepository.GetAllMachines(cancellationToken);
+        foreach (var machine in machines.Result)
         {
-            var tmp = _repository.GetUtilizationSum(request.Start, request.End, machine, cancellationToken);
+            var tmp = _repository.GetUtilizationSum(request.Start, request.End, machine.Id, cancellationToken);
             result.Add(tmp.Result == null ? 0 : tmp.Result);
         }
         return result;
