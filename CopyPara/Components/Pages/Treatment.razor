@@ -5,7 +5,7 @@
 
 <FluentStack>
     <FluentCard Width="300px" Height="200px">
-        <p>Here you can create new treatments for existing patients</p>
+        <p>Here you can create new treatments for existing patients. Scheduling a linear acc. machine is a prerequisite for ordering the treatment.</p>
         <FluentNavLink Href="treatment/create">
             <FluentButton IconStart="@(new Icons.Regular.Size16.AddCircle())"
                       Appearance="Appearance.Accent">
@@ -18,6 +18,26 @@
         <p>Here you can view the currently running treatments. You only get an overview on this interface, you cannot change your treatments. </p>
         <FluentNavLink Href="treatment/list">
             <FluentButton IconStart="@(new Icons.Regular.Size16.Apps())"
+                          Appearance="Appearance.Accent">
+                List
+            </FluentButton>
+        </FluentNavLink>
+
+    </FluentCard>
+    <FluentCard Width="300px" Height="200px" AreaRestricted="false">
+        <p>Here you can assign the schedule to the machines for the already created treatments. You can cancel existing but unnecessary reservations here. </p>
+        <FluentNavLink Href="treatment/edit">
+            <FluentButton IconStart="@(new Icons.Regular.Size16.Book())"
+                          Appearance="Appearance.Accent">
+                Book
+            </FluentButton>
+        </FluentNavLink>
+
+    </FluentCard>
+    <FluentCard Width="300px" Height="200px" AreaRestricted="false">
+        <p>Here you can see which days your patients receive treatment on which machine.This interface is only available for overview.</p>
+        <FluentNavLink Href="treatment/appoint">
+            <FluentButton IconStart="@(new Icons.Regular.Size16.Calendar())"
                           Appearance="Appearance.Accent">
                 List
             </FluentButton>
