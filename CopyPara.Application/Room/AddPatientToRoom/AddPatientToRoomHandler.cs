@@ -1,6 +1,7 @@
 ﻿using CopyPara.Application.Patient;
 using CopyPara.Application.Rooms;
 using MediatR;
+using System.Reflection.Metadata.Ecma335;
 
 namespace CopyPara.Application.Room.AddPatientToRoom
 {
@@ -23,19 +24,19 @@ namespace CopyPara.Application.Room.AddPatientToRoom
 
             if (patient == null)
             {
-                return "Failure";
+                return "bad";
             }
 
-            var room = await _roomRepository.GetRoom(patient);
+            var room = await _roomRepository.GetSuitableRoom(patient);
 
             if (room == null)
             {
-                return "Failure";
+                return "morebad";
             }
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return "Success";
+            return "asd";
         }
     }
 }

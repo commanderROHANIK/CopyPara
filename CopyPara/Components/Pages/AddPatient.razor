@@ -1,30 +1,31 @@
-@page "/addPatient"
+﻿@page "/patients/create"
 @rendermode InteractiveServer
 @attribute [Authorize]
 
+@using CopyPara.Domain.Patients.Enums
+@using Microsoft.AspNetCore.Authorization
 @using CopyPara.Application.Room.AddPatientToRoom
 @using CopyPara.Domain.Patients
 @using MediatR
 @using CopyPara.Application.Patient.Create
-@using Microsoft.AspNetCore.Authorization
-@inject ISender sender
+@inject ISender Sender
 
 <h1>Create New Patient</h1>
 
 <EditForm FormName="createPatientForm" Model="@Patient" OnSubmit="@CreatePatient">
-
     <div>
         <FluentLabel for="name">Name:</FluentLabel>
-        <FluentTextField id="name" @bind-Value=Patient.Name></FluentTextField>  
-        <FluentRadioGroup Name="numbers" @bind-Value=Patient.Gender Label="Gender">
+        <FluentTextField id="name" @bind-Value=Patient.Name></FluentTextField>
+        <FluentRadioGroup Name="sex" @bind-Value=Patient.Sex Label="Sex">
             <FluentRadio Value=@("Male")>Male</FluentRadio>
             <FluentRadio Value=@("Female")>Female</FluentRadio>
         </FluentRadioGroup>
-        <FluentRadioGroup Name="numbers" @bind-Value=Patient.Condition Label="Condition">
-            <FluentRadio Value=@(Condition.Disabled)>Disabled</FluentRadio>
-            <FluentRadio Value=@(Condition.Wheelchair)>Wheelchaired</FluentRadio>
-            <FluentRadio Value=@(Condition.Walking)>Walking</FluentRadio>
-        </FluentRadioGroup>
+        <FluentSelect TOption="Condition"
+                      Items="conditions"
+                      Label="Condition"
+                      OptionValue="@(c => c.ToString())"
+                      OptionText="@(c => c.ToString())"
+                      @bind-SelectedOption="@Patient.Condition" />
         <FluentRadioGroup Name="numbers" @bind-Value=IsInpatient Label="Status">
             <FluentRadio Value=@(true)>Inpatient</FluentRadio>
             <FluentRadio Value=@(false)>Not inpatient</FluentRadio>
@@ -32,19 +33,21 @@
     </div>
     <FluentButton Type="ButtonType.Submit" Appearance="@Appearance.Accent">Create Patient</FluentButton>
 </EditForm>
-
 @code {
-    public Patient Patient { get; set; }
-    public bool IsInpatient { get; set; } 
+    public Domain.Patients.Patient Patient { get; set; }
+    public bool IsInpatient { get; set; }
+    private IEnumerable<Condition> conditions;
 
-    protected override void OnInitialized() => Patient ??= new();
+    protected override void OnInitialized() 
+    { 
+        Patient ??= new();
+        conditions = new List<Condition>(3) { Condition.Disabled, Condition.Wheelchair, Condition.Walking };
+    }
 
     private async Task CreatePatient()
     {
-        await sender.Send(new CreatePatientRequest() { Name = Patient.Name, Condition = Patient.Condition, Gender = Patient.Gender });
+        ulong id = await Sender.Send(new CreatePatientRequest() { Name = Patient.Name, Condition = Patient.Condition, Sex = Patient.Sex });
 
-        await sender.Send(new AddPatientToRoomRequest() { PatientId = Patient.Id });
-        Patient.Name = "";
+        await Sender.Send(new AddPatientToRoomRequest() { PatientId = id });
     }
-
 }

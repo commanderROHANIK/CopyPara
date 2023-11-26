@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CopyPara.Application.Patient.Create;
 
-internal sealed class CreatePatientHandler : IRequestHandler<CreatePatientRequest, string>
+internal sealed class CreatePatientHandler : IRequestHandler<CreatePatientRequest, ulong>
 {
     private readonly IPatientRepository _patientRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -19,24 +19,24 @@ internal sealed class CreatePatientHandler : IRequestHandler<CreatePatientReques
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<string> Handle(CreatePatientRequest request, CancellationToken cancellationToken)
+    public async Task<ulong> Handle(CreatePatientRequest request, CancellationToken cancellationToken)
     {
         Domain.Patients.Patient patient = new()
         {
             Name = request.Name,
             Condition = request.Condition,
-            Gender = request.Gender,
+            Sex = request.Sex,
         };
 
         try
         {
             await _patientRepository.AddAsync(patient, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return "Patient added successfully";
+            return patient.Id;
         }
         catch
         {
-            return "Something went wrong";
+            throw new Exception();
         }
 
     }

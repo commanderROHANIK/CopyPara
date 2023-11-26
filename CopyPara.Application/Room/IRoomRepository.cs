@@ -9,7 +9,6 @@ namespace CopyPara.Application.Rooms
 {
     public interface IRoomRepository
     {
-        Task<Domain.Rooms.Room?> GetRoom(Domain.Patients.Patient patient);
-        void Update(Domain.Rooms.Room room);
+        Task<Domain.Rooms.Room?> GetSuitableRoom(Domain.Patients.Patient patient);
     }
 }
