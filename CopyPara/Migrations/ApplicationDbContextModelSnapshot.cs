@@ -398,13 +398,47 @@ namespace CopyPara.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Condition")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<ulong?>("RoomId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Sex")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("RoomId");
+
                     b.ToTable("Patients");
+                });
+
+            modelBuilder.Entity("CopyPara.Domain.Rooms.Room", b =>
+                {
+                    b.Property<ulong>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("NumberOfBeds")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OccupiedBeds")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RoomType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("WithBath")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Treatments.Treatment", b =>
@@ -673,6 +707,15 @@ namespace CopyPara.Migrations
                         .HasForeignKey("SlotId");
                 });
 
+            modelBuilder.Entity("CopyPara.Domain.Patients.Patient", b =>
+                {
+                    b.HasOne("CopyPara.Domain.Rooms.Room", "Room")
+                        .WithMany("Patients")
+                        .HasForeignKey("RoomId");
+
+                    b.Navigation("Room");
+                });
+
             modelBuilder.Entity("CopyPara.Domain.Treatments.Treatment", b =>
                 {
                     b.HasOne("CopyPara.Domain.Cancers.Cancer", "Cancer")
@@ -787,6 +830,11 @@ namespace CopyPara.Migrations
             modelBuilder.Entity("CopyPara.Domain.Occasions.Slot", b =>
                 {
                     b.Navigation("TimeSlots");
+                });
+
+            modelBuilder.Entity("CopyPara.Domain.Rooms.Room", b =>
+                {
+                    b.Navigation("Patients");
                 });
 
             modelBuilder.Entity("CopyPara.Domain.Treatments.Treatment", b =>

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyPara", "CopyPara\CopyPara.csproj", "{A1788DD1-5FE3-414B-AF9A-3247FC9B950A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CopyPara", "CopyPara\CopyPara.csproj", "{A1788DD1-5FE3-414B-AF9A-3247FC9B950A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyPara.Domain", "CopyPara.Domain\CopyPara.Domain.csproj", "{FB16DB7B-4790-40A2-8ED1-53773BC05D61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CopyPara.Domain", "CopyPara.Domain\CopyPara.Domain.csproj", "{FB16DB7B-4790-40A2-8ED1-53773BC05D61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyPara.Application", "CopyPara.Application\CopyPara.Application.csproj", "{8C46B792-B495-4167-B636-858079B3C8B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CopyPara.Application", "CopyPara.Application\CopyPara.Application.csproj", "{8C46B792-B495-4167-B636-858079B3C8B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
