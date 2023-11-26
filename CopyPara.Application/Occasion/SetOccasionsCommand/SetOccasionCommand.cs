@@ -2,4 +2,4 @@
 
 namespace CopyPara.Application.Occasion.SetOccasionsCommand;
 
-public record class SetOccasionCommand(ulong DoctorId) : IRequest;
+public record class SetOccasionCommand(ulong TreatmentId) : IRequest;

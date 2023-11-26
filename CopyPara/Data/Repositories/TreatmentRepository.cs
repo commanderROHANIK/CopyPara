@@ -48,9 +48,9 @@ public sealed class TreatmentRepository : ITreatmentRepository
         return treatments;
     }
 
-    public ValueTask<Treatment?> GetTreatmentAsync(ulong treatmentId, CancellationToken cancellationToken = default)
+    public Task<Treatment?> GetTreatmentAsync(ulong treatmentId, CancellationToken cancellationToken = default)
     {
-        return _context.Treatments.FindAsync(treatmentId, cancellationToken);
+        return _context.Treatments.Include(x => x.Cancer).FirstAsync(x => x.Id == treatmentId, cancellationToken);
     }
 
     Task<Application.Treatment.GetCancer.Cancer[]> ITreatmentRepository.GetCancersForSelectAsync(CancellationToken cancellationToken)
