@@ -1,0 +1,28 @@
+@page "/patients"
+
+<FluentStack>
+    <FluentCard Width="300px" Height="200px">
+        <p>Here you can add new patients to the system</p>
+        <FluentNavLink Href="patients/create">
+            <FluentButton IconStart="@(new Icons.Regular.Size16.AddCircle())"
+                          Appearance="Appearance.Accent">
+                Create
+            </FluentButton>
+        </FluentNavLink>
+
+    </FluentCard>
+    <FluentCard Width="300px" Height="200px" AreaRestricted="false">
+        <p>Here you can view the currently running treatments. You only get an overview on this interface, you cannot change your treatments. </p>
+        <FluentNavLink Href="treatment/list">
+            <FluentButton IconStart="@(new Icons.Regular.Size16.Apps())"
+                          Appearance="Appearance.Accent">
+                List
+            </FluentButton>
+        </FluentNavLink>
+
+    </FluentCard>
+</FluentStack>
+
+@code {
+
+}
