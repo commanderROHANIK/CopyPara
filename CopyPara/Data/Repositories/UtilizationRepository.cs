@@ -20,7 +20,7 @@ public sealed class UtilizationRepository : IUtilizationRepository
 
     public async Task<Utilization> FindUtilizationAsync(DateTime date, ulong machineId, CancellationToken cancellationToken = default)
     {
-        var uti = await _context.Utilization.FirstOrDefaultAsync(x => x.Date == date && x.MachineId == machineId, cancellationToken);
+        var uti = await _context.Utilization.Include(x => x.Slots).ThenInclude(x => x.TimeSlots).Include(x => x.Machine).FirstOrDefaultAsync(x => x.Date == date && x.MachineId == machineId, cancellationToken);
         return uti;
     }
 
@@ -31,13 +31,13 @@ public sealed class UtilizationRepository : IUtilizationRepository
 
     public async Task<int> GetUtilizationSum(DateTime start, DateTime end, ulong machineId, CancellationToken cancellationToken = default)
     {
-        var uti = await _context.Utilization.Where(x => x.MachineId == machineId && x.Date >= start && x.Date <= end).SumAsync(x => x.CurrentUtilization);
+        var uti = await _context.Utilization.Include(x => x.Slots).ThenInclude(x => x.TimeSlots).Include(x => x.Machine).Where(x => x.MachineId == machineId && x.Date >= start && x.Date <= end).SumAsync(x => x.CurrentUtilization);
         return uti;
     }
 
     public async Task<List<(ulong,int)>> GetUtilization(DateTime start, DateTime end, CancellationToken cancellationToken = default)
     {
-        IQueryable<IGrouping<ulong, Utilization>> utis = _context.Utilization.Where(x => x.Date >= start && x.Date <= end).GroupBy(x => x.MachineId);
+        IQueryable<IGrouping<ulong, Utilization>> utis = _context.Utilization.Include(x => x.Slots).ThenInclude(x => x.TimeSlots).Include(x => x.Machine).Where(x => x.Date >= start && x.Date <= end).GroupBy(x => x.MachineId);
 
         List<(ulong,int)> result = [];
 

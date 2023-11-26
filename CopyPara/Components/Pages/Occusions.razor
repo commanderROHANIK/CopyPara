@@ -13,7 +13,7 @@
 
 <FluentDataGrid Items="@items">
     <PropertyColumn Property="@(p => p.Treatment.Patient.Name)" Sortable="true" />
-    <PropertyColumn Property="@(p => GetTime(p.TimeSlot))" Format="mm:HH" Sortable="true" />
+    <PropertyColumn Property="@(p => GetTime(p))"  Sortable="true" />
     <PropertyColumn Property="@(p => p.Machine.Name)" Sortable="true" />
 </FluentDataGrid>
 
@@ -50,10 +50,10 @@
         var t = sender.Send(new ReadTreatmentRequest());
         return t.Result;
     }
-    private DateTime GetTime(TimeSlot timeSlot)
+    private DateTime GetTime(Occasion o)
     {
-        var result = new DateTime();
-        result = result.AddSeconds(480 + timeSlot.StartTime);
+        var result = o.Date;
+        result = result.AddSeconds(480 + o.TimeSlot.StartTime);
         return result;
     }
 }
