@@ -12,7 +12,7 @@ internal sealed class MachineConfiguration : IEntityTypeConfiguration<Machine>
     {
         builder.HasKey(x => x.Id);
 
-        builder.HasMany(x => x.Utilization).WithOne(x => x.Machine).HasForeignKey(e => e.MachineId);
+        builder.HasMany(x => x.Utilization).WithOne(x => x.Machine);
 
         FillData(builder);
     }
