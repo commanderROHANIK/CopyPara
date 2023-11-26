@@ -58,7 +58,8 @@ namespace CopyPara.Application.Treatment.Create
                 Cancer = cancer,
                 StartDate = request.StartDate,
                 Fraction = request.Fraction,
-                Weight = request.Weight
+                Weight = request.Weight,
+                BreatHolding = request.CanHoldBreath
             };
 
             await _treatmentRepository.AddAsync(treatment, cancellationToken);
