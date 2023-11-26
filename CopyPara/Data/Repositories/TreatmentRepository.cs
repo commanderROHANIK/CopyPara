@@ -22,7 +22,7 @@ public sealed class TreatmentRepository : ITreatmentRepository
 
     public Task<Treatment[]> GetAllTreatment(CancellationToken cancellationToken = default)
     {
-        return _context.Treatments.Include(x => x.Patient).Include(x => x.Cancer).ToArrayAsync(cancellationToken);
+        return _context.Treatments.Include(x => x.Patient).Include(x => x.Occasions).ThenInclude(x => x.TimeSlot).Include(x => x.Occasions).ThenInclude(x => x.Machine).Include(x => x.Cancer).ToArrayAsync(cancellationToken);
     }
 
     public ValueTask<Cancer?> GetCancerAsync(ulong cancerId, CancellationToken cancellationToken = default)
