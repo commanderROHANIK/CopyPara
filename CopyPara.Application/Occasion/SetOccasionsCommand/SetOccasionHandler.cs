@@ -4,8 +4,10 @@ using CopyPara.Application.Occasion.Scheduler;
 using CopyPara.Application.Occasion.SetOccasionsCommand;
 using CopyPara.Application.Treatment;
 using CopyPara.Application.Utilization;
+using CopyPara.Domain.Machines;
 using CopyPara.Domain.Occasions;
 using MediatR;
+using System.Reflection.Metadata.Ecma335;
 
 namespace CopyPara.Application;
 
@@ -46,25 +48,38 @@ public sealed class SetOccasionHandler : IRequestHandler<SetOccasionCommand>
         }
 
         var treat = await _treatmentRepository.GetTreatmentAsync(request.TreatmentId, cancellationToken);
-        var mach = await _scheduler.MachineType(treat, cancellationToken);
-        var slot = await _scheduler.TimeSlot(treat.StartDate, treat.StartDate.AddDays(treat.Fraction), treat.Cancer.AvgTimeMins, mach, cancellationToken);
+        var machineType = await _scheduler.MachineType(treat, cancellationToken);
+        var machineId = await _scheduler.CalculateMachineId(treat.StartDate, treat.StartDate.AddDays(treat.Fraction), machineType, cancellationToken);
+        var slotTime = await _scheduler.TimeSlot(treat.StartDate, treat.StartDate.AddDays(treat.Fraction), treat.Cancer.AvgTimeMins, machineType, cancellationToken);
 
-        foreach(var day in EachDay(treat.StartDate, treat.StartDate.AddDays(treat.Fraction)))
+
+        var slot = new Slot()
+        {
+            Start = slotTime.StartTime,
+            End = slotTime.StartTime + SlotTypeExtensions.TimeToSlot(treat.Cancer.AvgTimeMins).SlotToQuantity() * treat.Cancer.AvgTimeMins,
+            Type = SlotTypeExtensions.TimeToSlot(treat.Cancer.AvgTimeMins),
+            TimeSlots = [slotTime]           
+        };
+
+        IEnumerable<Slot> slots =
+            Empty.Select(w => w.Start == slotTime.StartTime ? slot : w);
+
+        foreach (var day in EachDay(treat.StartDate, treat.StartDate.AddDays(treat.Fraction)))
         {
             Domain.Occasions.Occasion occasion = new()
             {
                 Date = day,
-                MachineId = mach.Id,
+                MachineId = machineId,
                 TreatmentId = treat.Id,
-                TimeSlot = slot
+                TimeSlot = slotTime
             };
 
             Domain.Utilizations.Utilization uti = new()
             {
                 Date = day,
-                MachineId = mach.Id,
+                MachineId = machineId,
                 CurrentUtilization = treat.Cancer.AvgTimeMins,
-                Slots = Empty.ToList(),
+                Slots = slots.ToList(),
 
             };
 

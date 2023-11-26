@@ -58,19 +58,7 @@ namespace CopyPara.Application.Occasion.Scheduler
         {
             var slot = new TimeSlot();
             var days = EachDay(start, end);
-            var machines = await _machineRepository.GetMachinesAsync(machineType, cancellationToken);
-            /*TO-DO: Filter machine by opened slots*/
-            ulong machineId = machines[0].Id;
-            int uti = await _utilizationRepository.GetUtilizationSum(start, end, machineId, cancellationToken);
-            foreach (var machine in machines)
-            {
-                int copUti = await _utilizationRepository.GetUtilizationSum(start, end, machine.Id, cancellationToken);
-                if (copUti < uti)
-                {
-                    machineId = machine.Id;
-                    uti = copUti;
-                }
-            }
+            ulong machineId = await CalculateMachineId(start, end, machineType, cancellationToken);
 
             SlotType slotType = SlotTypeExtensions.TimeToSlot(length);
 
@@ -80,13 +68,13 @@ namespace CopyPara.Application.Occasion.Scheduler
             foreach (var openSlotFirstDay in openSlotsFirstDay)
             {
                 var isOpened = true;
-                foreach(var day in days)
+                foreach (var day in days)
                 {
                     var utilization = await _utilizationRepository.FindUtilizationAsync(day, machineId, cancellationToken);
                     isOpened &= utilization.Slots.Where(x => x.Start == openSlotFirstDay.Start)?.All(x => x.Type == openSlotFirstDay.Type) ?? true;
                 }
 
-                if(isOpened)
+                if (isOpened)
                 {
                     slot.StartTime = openSlotFirstDay.Start + openSlotFirstDay.TimeSlots.Count() * slotType.SlotToQuantity();
                     slot.EndTime = slot.StartTime + slotType.SlotToQuantity();
@@ -114,6 +102,25 @@ namespace CopyPara.Application.Occasion.Scheduler
             }
 
             return slot;
+        }
+
+        public async Task<ulong> CalculateMachineId(DateTime start, DateTime end, MachineType machineType, CancellationToken cancellationToken)
+        {
+            var machines = await _machineRepository.GetMachinesAsync(machineType, cancellationToken);
+            /*TO-DO: Filter machine by opened slots*/
+            ulong machineId = machines[0].Id;
+            int uti = await _utilizationRepository.GetUtilizationSum(start, end, machineId, cancellationToken);
+            foreach (var machine in machines)
+            {
+                int copUti = await _utilizationRepository.GetUtilizationSum(start, end, machine.Id, cancellationToken);
+                if (copUti < uti)
+                {
+                    machineId = machine.Id;
+                    uti = copUti;
+                }
+            }
+
+            return machineId;
         }
 
         private IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)

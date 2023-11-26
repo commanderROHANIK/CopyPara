@@ -12,5 +12,6 @@ namespace CopyPara.Application.Occasion.Scheduler
     {
         Task<MachineType> MachineType(Domain.Treatments.Treatment request, CancellationToken cancellationToken);
         Task<TimeSlot> TimeSlot(DateTime start, DateTime end, int length, MachineType machineType, CancellationToken cancellationToken);
+        Task<ulong> CalculateMachineId(DateTime start, DateTime end, MachineType machineType, CancellationToken cancellationToken);
     }
 }
