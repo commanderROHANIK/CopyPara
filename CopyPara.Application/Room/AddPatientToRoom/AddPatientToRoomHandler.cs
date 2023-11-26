@@ -36,7 +36,7 @@ namespace CopyPara.Application.Room.AddPatientToRoom
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return "asd";
+            return "good";
         }
     }
 }

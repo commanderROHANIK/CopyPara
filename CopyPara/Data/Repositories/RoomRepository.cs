@@ -35,10 +35,13 @@ namespace CopyPara.Data.Repositories
                             .FirstOrDefaultAsync();
             }
 
-
             var resultPatient = await _context.Patients.FindAsync(patient.Id);
+
+            if (resultPatient == null)
+                return null;
+
             resultPatient.Room = room;
-            resultPatient.RoomId = room.Id;
+            resultPatient.RoomId = room?.Id ?? null;
 
             _context.Update(resultPatient);
 
