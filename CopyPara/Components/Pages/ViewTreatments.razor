@@ -32,16 +32,23 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await GetTreatments();
+    }
+
+    private async Task GetTreatments()
+    {
         treatments = await Sender.Send(new GetTreatmentsQuery());
     }
 
     private async Task Delete(DocTreatments treatment)
     {
         await Sender.Send(new DeleteOccasionCommand(treatment.Id));
+        await GetTreatments();
     }
 
     private async Task Update(DocTreatments treatment)
     {
         await Sender.Send(new SetOccasionCommand(treatment.Id));
+        await GetTreatments();
     }
 }
