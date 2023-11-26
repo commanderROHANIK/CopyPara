@@ -2,9 +2,10 @@
 @rendermode InteractiveServer
 @attribute [Authorize]
 
+@using CopyPara.Application.Utilization.Read
 @using Microsoft.AspNetCore.Authorization
 @using CopyPara.Application.Patient.Read
-@using CopyPara.Domain.Occasions
+@using CopyPara.Domain.Utilizations
 @using ChartJs.Blazor
 @using ChartJs.Blazor.BarChart
 @using ChartJs.Blazor.Common
@@ -32,7 +33,7 @@
 
 @code {
     JustifyContent Justification = JustifyContent.FlexStart;
-    public List<Occasion> _Occasions = new List<Occasion>();
+    public List<int> _Uti = new List<int>();
     private static string[] _labels = { "TrueBeam1", "TrueBeam2", "VitalBeam1", "VitalBeam1", "Unique" };
     private BarConfig _barConfig;
 
@@ -71,7 +72,7 @@
 
     private BarDataset<int> getColorsWithQuantities()
     {
-        int[] usageData = { 6, 5, 3, 7, 8 };
+        int[] usageData = _Uti.ToArray();
         return new BarDataset<int>(usageData, horizontal: true)
         {
             BackgroundColor = GetColors(usageData)
@@ -103,11 +104,11 @@
 
     private async Task GetOccasion()
     {
-        var occasions = await sender.Send(new ReadOccasionRequest());
+        var utis = await sender.Send(new ReadUtiRequest(DateTime.Today, DateTime.Today.AddDays(7)));
 
-        await foreach (var occasion in occasions)
+        foreach (var uti in utis)
         {
-            _Occasions.Add(occasion);
+            _Uti.Add(uti);
         }
     }
 

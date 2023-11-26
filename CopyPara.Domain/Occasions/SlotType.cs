@@ -13,6 +13,7 @@ namespace CopyPara.Domain.Occasions
         S15,
         S12,
         S10,
+        S20,
         Non
     }
 
@@ -26,6 +27,7 @@ namespace CopyPara.Domain.Occasions
                 case SlotType.S15: return 4;
                 case SlotType.S12: return 5;
                 case SlotType.S10: return 6;
+                case SlotType.S20: return 3;
                 default: throw new ArgumentOutOfRangeException("type");
             }
         }
@@ -37,6 +39,7 @@ namespace CopyPara.Domain.Occasions
                 case 15: return SlotType.S15;
                 case 12: return SlotType.S12;
                 case 10: return SlotType.S10;
+                case 20: return SlotType.S20;
                 default: throw new ArgumentOutOfRangeException("length");
             }
         }
@@ -49,6 +52,7 @@ namespace CopyPara.Domain.Occasions
                 case SlotType.S15: return 15;
                 case SlotType.S12: return 12;
                 case SlotType.S10: return 10;
+                case SlotType.S20: return 20;
                 default: throw new ArgumentOutOfRangeException("type");
             }
         }
